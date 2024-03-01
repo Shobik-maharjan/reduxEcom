@@ -20,7 +20,7 @@ const Login = () => {
     if (user.userList >= 1) {
       navigate("/");
     }
-  });
+  }, []);
 
   // const submitBtn = async (e: any) => {
   //   e.preventDefault();
