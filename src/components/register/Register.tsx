@@ -1,15 +1,20 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+// import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { auth, db } from "../firebaseConfig/config";
-import { addDoc, collection } from "firebase/firestore";
+// import { auth, db } from "../firebaseConfig/config";
+// import { addDoc, collection } from "firebase/firestore";
+import { useDispatch } from "react-redux";
+// import { registerUser } from "../redux/actions/userActions";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { registerUser } from "../redux/actions/userActions";
 
 const Register = () => {
+  const dispatch = useDispatch();
   const [data, setData] = useState({
     userName: "",
     email: "",
     password: "",
-    uid: "",
   });
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
@@ -18,31 +23,34 @@ const Register = () => {
       [name]: value,
     });
   };
-  const submitBtn = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    try {
-      const users = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
-      console.log(users);
+  const { userName, email, password } = data;
+  // const submitBtn = async (e: any) => {
+  //   e.preventDefault();
+  //   try {
+  //     const users = await createUserWithEmailAndPassword(
+  //       auth,
+  //       data.email,
+  //       data.password
+  //     );
+  //     console.log(users);
 
-      const user = {
-        userName: data.userName,
-        email: users.user.email,
-        password: data.password,
-        uid: users.user.uid,
-      };
-      console.log(user);
-      await addDoc(collection(db, "users"), user);
-      console.log("user added to firebase", user);
-      //   await addDoc(userRef, user);
-      //   console.log(user.email);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     const user = {
+  //       userName: data.userName,
+  //       email: users.user.email,
+  //       password: data.password,
+  //       uid: users.user.uid,
+  //     };
+  //     console.log(user);
+  //     addDoc(collection(db, "users"), {
+  //       user,
+  //     });
+  //     dispatch(registerUser({ userName, email, uid: users.user.uid }));
+  //     //   await addDoc(userRef, user);
+  //     //   console.log(user.email);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   return (
     <>
       <div className="w-full bg-slate-200 h-screen pt-6">
@@ -110,7 +118,15 @@ const Register = () => {
             <button
               type="button"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={submitBtn}
+              onClick={() =>
+                dispatch<any>(
+                  registerUser({
+                    userName,
+                    email,
+                    password,
+                  })
+                )
+              }
             >
               REGISTER
             </button>
@@ -122,6 +138,7 @@ const Register = () => {
             </Link>
           </div>
         </form>
+        <ToastContainer />
       </div>
     </>
   );
