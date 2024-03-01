@@ -35,9 +35,8 @@ const Register = () => {
         uid: users.user.uid,
       };
       console.log(user);
-      addDoc(collection(db, "users"), {
-        user,
-      });
+      await addDoc(collection(db, "users"), user);
+      console.log("user added to firebase", user);
       //   await addDoc(userRef, user);
       //   console.log(user.email);
     } catch (error) {
