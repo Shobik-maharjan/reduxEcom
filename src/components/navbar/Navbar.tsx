@@ -1,6 +1,6 @@
 import { CiSearch } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../redux/actions/userActions";
 import { useEffect, useState } from "react";
 const Navbar = () => {
@@ -27,7 +27,9 @@ const Navbar = () => {
   return (
     <>
       <div className="flex justify-around p-4 items-center bg-black">
-        <div className="logo text-white">Rotten Tomatoess</div>
+        <div className="logo text-white">
+          <Link to={"/"}>Rotten Tomatoess</Link>
+        </div>
         <div className="search w-5/12">
           <input
             type="search"

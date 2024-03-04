@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { registerUser } from "../redux/actions/userActions";
 
 const Register = () => {
-  const dispatch = useDispatch();
+  const dispatch:any = useDispatch();
   const [data, setData] = useState({
     userName: "",
     email: "",
@@ -119,7 +119,7 @@ const Register = () => {
               type="button"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               onClick={() =>
-                dispatch<any>(
+                dispatch(
                   registerUser({
                     userName,
                     email,
