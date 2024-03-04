@@ -4,8 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../redux/actions/userActions";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebaseConfig/config";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -14,13 +12,14 @@ const Login = () => {
   const navigate = useNavigate();
   const user = useSelector((state: any) => state.userList);
 
-  console.log(user.userList);
+  // console.log(user.userList.map((user: any) => user.email));
 
   useEffect(() => {
-    if (user.userList >= 1) {
+    if (user.userList.length >= 1) {
+      // localStorage.setItem("user", user.userList[0].uid);
       navigate("/");
     }
-  }, []);
+  }, [user]);
 
   // const submitBtn = async (e: any) => {
   //   e.preventDefault();

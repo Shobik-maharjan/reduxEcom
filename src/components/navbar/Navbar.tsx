@@ -1,5 +1,29 @@
 import { CiSearch } from "react-icons/ci";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../redux/actions/userActions";
+import { useEffect, useState } from "react";
 const Navbar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [showLogout, setShowLogout] = useState<boolean>(false);
+
+  const handleLogoutClick = () => {
+    setShowLogout((prevState) => !prevState);
+  };
+
+  const user = useSelector((state: any) => state.userList);
+  // const username = user.userList[0]?.username;
+  const username = localStorage.getItem("userName");
+  // console.log(localStorage.getItem("userName"));
+
+  useEffect(() => {
+    if (localStorage.getItem("user") === null) {
+      navigate("/login");
+    }
+  }, [user]);
+
   return (
     <>
       <div className="flex justify-around p-4 items-center bg-black">
@@ -17,8 +41,23 @@ const Navbar = () => {
         <div className="category text-white">
           <ul className="flex items-center">
             <li className="px-2.5">Movies</li>
-            <li className="px-2.5">Tv Shows</li>
-            <li className="px-2.5">My List</li>
+            <li className="px-2.5">Tv&nbsp;Shows</li>
+            <li className="px-2.5">My&nbsp;List</li>
+            {/* <li className="px-2.5">{username}</li> */}
+            <li className="px-2.5">
+              <button onClick={handleLogoutClick}>{username}</button>
+              {showLogout && (
+                <div className="absolute right-[2%] m-2 bg-white px-6 py-2">
+                  <button
+                    className="text-lg bg-emerald-500 hover:bg-emerald-600 p-2 rounded text-white"
+                    onClick={() => dispatch<any>(logoutUser())}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+              {/* <Link to={dispatch<any>(logoutUser())}>Logout</Link> */}
+            </li>
           </ul>
         </div>
       </div>
