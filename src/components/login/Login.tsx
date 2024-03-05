@@ -19,6 +19,9 @@ const Login = () => {
       // localStorage.setItem("user", user.userList[0].uid);
       navigate("/");
     }
+    if (localStorage.getItem("user") !== null) {
+      navigate("/");
+    }
   }, [user]);
 
   // const submitBtn = async (e: any) => {
