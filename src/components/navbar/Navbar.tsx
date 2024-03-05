@@ -42,8 +42,12 @@ const Navbar = () => {
 
         <div className="category text-white">
           <ul className="flex items-center">
-            <li className="px-2.5">Movies</li>
-            <li className="px-2.5">Tv&nbsp;Shows</li>
+            <li className="px-2.5">
+              <Link to={"/movies"}>Movies</Link>
+            </li>
+            <li className="px-2.5">
+              <Link to={"/tv-shows"}>Tv&nbsp;Shows</Link>
+            </li>
             <li className="px-2.5">My&nbsp;List</li>
             {/* <li className="px-2.5">{username}</li> */}
             <li className="px-2.5">
