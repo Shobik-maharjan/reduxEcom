@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import "video-react/dist/video-react.css";
 import ReactPlayer from "react-player";
 
 const SinglePage = () => {
@@ -14,7 +13,7 @@ const SinglePage = () => {
   const [singleMovieData, setSingleMovieData] = useState<any>("");
   const fetchData = async () => {
     const singleMovieData = await axios.get(
-      `${url}/${movieId.movieId}?api_key=${apiKey}`
+      `${url}/movie/${movieId.movieId}?api_key=${apiKey}`
     );
     setSingleMovieData(singleMovieData.data);
     // console.log(`${imgUrl}/${singleMovieData.sdata.poster_path}`);
@@ -22,7 +21,7 @@ const SinglePage = () => {
 
   const fetchVideo = async () => {
     const videoUrl = await axios.get(
-      `${url}/${movieId.movieId}/videos?api_key=${apiKey}`
+      `${url}/movie/${movieId.movieId}/videos?api_key=${apiKey}`
     );
     const keys = videoUrl.data.results.map(
       (item: any) => `https://www.youtube.com/watch?v=${item.key}`
@@ -49,7 +48,7 @@ const SinglePage = () => {
               <img
                 src={`${imgUrl}/${singleMovieData.poster_path}`}
                 alt=""
-                className="w-full"
+                className="w-full rounded-md"
               />
             </div>
 

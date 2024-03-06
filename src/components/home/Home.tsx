@@ -36,7 +36,7 @@ const Home = () => {
       <div className="min-w-60 mt-2">
         <Link to={`/singlepage/${movieId}`}>
           <img
-            className="card cursor-pointer hover:opacity-80"
+            className="card cursor-pointer hover:opacity-80 rounded-md"
             src={img}
             alt="cover"
           />
@@ -65,7 +65,7 @@ const Home = () => {
 
   const fetchVideo = async () => {
     const videoUrl = await axios.get<any>(
-      `${url}/1096197/videos?api_key=${apiKey}`
+      `${url}/movie/1096197/videos?api_key=${apiKey}`
     );
     setVideo(videoUrl.data.results[0].key);
     // console.log(videoUrl.data.results[0].site);
@@ -121,7 +121,7 @@ const Home = () => {
       <div className="Movies List">
         <Row
           title={"Now Playing Movies"}
-          arr={movieLists.nowPlayingmMovieList}
+          arr={movieLists.nowPlayingMovieList}
         />
         <Row title={"Upcoming Movies"} arr={movieLists.upcomingMovieList} />
         <Row title={"Popular Movies"} arr={movieLists.popularMovieList} />

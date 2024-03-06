@@ -14,7 +14,7 @@ const movieReducers = (state: any = [], action: any) => {
       //   console.log(action);
       return {
         ...state,
-        nowPlayingmMovieList: action.payload,
+        nowPlayingMovieList: action.payload,
       };
     case UPCOMING_MOVIE_LIST:
       return {

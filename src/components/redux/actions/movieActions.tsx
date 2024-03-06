@@ -15,7 +15,7 @@ export const nowPlayingMovieList = () => async (dispatch: any) => {
   try {
     const {
       data: { results },
-    } = await axios.get(`${url}/${nowPlaying}?api_key=${apiKey}`);
+    } = await axios.get(`${url}/movie/${nowPlaying}?api_key=${apiKey}&page=1`);
     dispatch({
       type: NOWPLAYING_MOVIE_LIST,
       payload: results,
@@ -29,7 +29,7 @@ export const upComingMovieList = () => async (dispatch: any) => {
   try {
     const {
       data: { results },
-    } = await axios.get(`${url}/${upcoming}?api_key=${apiKey}`);
+    } = await axios.get(`${url}/movie/${upcoming}?api_key=${apiKey}`);
     dispatch({
       type: UPCOMING_MOVIE_LIST,
       payload: results,
@@ -43,7 +43,7 @@ export const popularMovieList = () => async (dispatch: any) => {
   try {
     const {
       data: { results },
-    } = await axios.get(`${url}/${popular}?api_key=${apiKey}`);
+    } = await axios.get(`${url}/movie/${popular}?api_key=${apiKey}`);
     dispatch({
       type: POPULAR_MOVIE_LIST,
       payload: results,
