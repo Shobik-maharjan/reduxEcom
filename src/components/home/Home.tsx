@@ -1,24 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   nowPlayingMovieList,
   popularMovieList,
+  trendingMovieList,
   upComingMovieList,
 } from "../redux/actions/movieActions";
-import axios from "axios";
 
 const imgUrl = import.meta.env.VITE_IMAGE_URL;
-const apiKey = import.meta.env.VITE_API_KEY;
-const url = import.meta.env.VITE_URL;
 
 const Home = () => {
-  const [video, setVideo] = useState<any>();
   const dispatch: any = useDispatch();
   const movieLists = useSelector((state: any) => state.movieList);
-  const youtubeURL = `https://www.youtube.com/watch?v=${video}`;
   useEffect(() => {
     dispatch(nowPlayingMovieList());
+    dispatch(trendingMovieList());
     dispatch(upComingMovieList());
     dispatch(popularMovieList());
   }, []);
@@ -48,7 +45,7 @@ const Home = () => {
 
   const Row = ({ title, arr = [] }: { title: string; arr: any[] }) => (
     <div className="row w-full">
-      <h2 className="pl-2 font-bold text-lg">{title}</h2>
+      <h2 className="pl-2 font-bold text-xl">{title}</h2>
 
       <div className="w-full flex gap-2 overflow-x-scroll snap-x snap-mandatory">
         {arr.map((item, index) => (
@@ -63,27 +60,8 @@ const Home = () => {
     </div>
   );
 
-  const fetchVideo = async () => {
-    const videoUrl = await axios.get<any>(
-      `${url}/movie/1096197/videos?api_key=${apiKey}`
-    );
-    setVideo(videoUrl.data.results[0].key);
-    // console.log(videoUrl.data.results[0].site);
-  };
-  // console.log(video);
-
-  useEffect(() => {
-    fetchVideo();
-  }, []);
-
   return (
     <>
-      <div className="moviePlaying">
-        <div>
-          {/* <img src={video.results[0].site} alt="" /> */}
-          {/* <YouTube videoId={video} opts={{ width: "560", height: "315" }} /> */}
-        </div>
-      </div>
       <div
         className="banner bg-cover mb-5"
         style={{
@@ -107,7 +85,7 @@ const Home = () => {
 
               <button
                 type="button"
-                className="bg-white hover:opacity-95 rounded-xl px-4 py-2 mt-4"
+                className="bg-gray-200 hover:opacity-95 rounded-xl px-4 py-2 mt-4"
               >
                 <Link to={`/singlepage/${movieLists?.popularMovieList[0]?.id}`}>
                   Watch Now
@@ -123,6 +101,7 @@ const Home = () => {
           title={"Now Playing Movies"}
           arr={movieLists.nowPlayingMovieList}
         />
+        <Row title={"Trending Movies"} arr={movieLists.trendingMovieList} />
         <Row title={"Upcoming Movies"} arr={movieLists.upcomingMovieList} />
         <Row title={"Popular Movies"} arr={movieLists.popularMovieList} />
       </div>

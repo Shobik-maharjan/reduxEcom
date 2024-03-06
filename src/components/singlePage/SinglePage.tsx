@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ReactPlayer from "react-player";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/actions/movieActions";
 
 const SinglePage = () => {
   const movieId = useParams();
@@ -9,6 +11,7 @@ const SinglePage = () => {
   const url = import.meta.env.VITE_URL;
   const imgUrl = import.meta.env.VITE_IMAGE_URL;
   const [video, setVideo] = useState<any>();
+  const dispatch: any = useDispatch();
 
   const [singleMovieData, setSingleMovieData] = useState<any>("");
   const fetchData = async () => {
@@ -29,7 +32,6 @@ const SinglePage = () => {
     setVideo(keys);
     // console.log(videoUrl);
   };
-  console.log(video);
 
   useEffect(() => {
     fetchVideo();
@@ -99,6 +101,17 @@ const SinglePage = () => {
               <div className="vote flex">
                 <h2 className="font-bold pr-2">Vote:</h2>
                 <p>{singleMovieData.vote_count}</p>
+              </div>
+
+              <div className="my-list">
+                <button
+                  className="bg-gray-200 px-4 py-2 rounded-md hover:opacity-95"
+                  onClick={() =>
+                    dispatch(addToCart(singleMovieData.original_title))
+                  }
+                >
+                  Add to List
+                </button>
               </div>
             </div>
           </div>
