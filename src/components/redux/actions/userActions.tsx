@@ -1,6 +1,7 @@
 type loginType = {
   email: string;
   password: string;
+  loading: any;
 };
 type userType = loginType & {
   userName: string;
@@ -13,27 +14,21 @@ import {
 import { auth, db } from "../../firebaseConfig/config";
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import {
-  LOGIN_USER,
+  LOGIN_FAIL,
+  LOGIN_REQUEST,
+  LOGIN_USER_SUCCESS,
   LOGOUT_USER,
+  REGISTER_FAIL,
   REGISTER_USER,
 } from "../constants/userConstants";
 import { toast } from "react-toastify";
 
 export const registerUser =
-  ({ userName, email, password }: userType) =>
+  ({ userName, email, password }: Omit<userType, "loading">) =>
   async (dispatch: any) => {
     try {
       const users = await createUserWithEmailAndPassword(auth, email, password);
-      toast.success("user registered successfully");
-      dispatch({
-        type: REGISTER_USER,
-        payload: {
-          userName,
-          email,
-          password,
-          uid: users.user.uid,
-        },
-      });
+
       const user = {
         userName,
         email: users.user.email,
@@ -41,16 +36,40 @@ export const registerUser =
         uid: users.user.uid,
       };
       addDoc(collection(db, "users"), { user });
-    } catch (e) {
-      console.log(e);
+      setTimeout(() => {
+        dispatch({
+          type: REGISTER_USER,
+          payload: {
+            userName,
+            email,
+            password,
+            uid: users.user.uid,
+          },
+        });
+        toast.success("user registered successfully");
+      }, 1000);
+    } catch (error) {
+      dispatch({
+        type: REGISTER_FAIL,
+        payload: error,
+      });
+      console.log(error);
     }
   };
 
 export const loginUser =
-  ({ email, password }: loginType) =>
+  ({ email, password, loading }: loginType) =>
   async (dispatch: any) => {
     try {
+      if (loading === true) {
+        return;
+      }
+      dispatch({
+        type: LOGIN_REQUEST,
+      });
+
       const user = await signInWithEmailAndPassword(auth, email, password);
+      console.log(user);
       toast.success("user login successfully");
       localStorage.setItem("user", user.user.uid);
       const userDetail = await getDocs(collection(db, "users"));
@@ -59,21 +78,22 @@ export const loginUser =
         if (user.user.uid === userId) {
           localStorage.setItem("userName", doc.data().user.userName);
           // console.log(userId);
-          const username = doc.data().user.userName;
           setTimeout(() => {
             dispatch({
-              type: LOGIN_USER,
+              type: LOGIN_USER_SUCCESS,
               payload: {
                 email,
-                username,
                 uid: user.user.uid,
               },
             });
           }, 1000);
         }
       });
-      // console.log(user.user);
     } catch (error) {
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: error,
+      });
       console.log(error);
     }
   };

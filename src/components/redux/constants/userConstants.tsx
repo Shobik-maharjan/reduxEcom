@@ -1,5 +1,5 @@
 export const REGISTER_USER = "REGISTER_USER";
-export const LOGIN_USER = "LOGIN_USER";
+export const LOGIN_USER_SUCCESS = "LOGIN_USER_SUCCESS";
 export const LOGOUT_USER = "LOGOUT_USER";
 
 export const NOWPLAYING_MOVIE_LIST = "NOWPLAYING_MOVIE_LIST";
@@ -11,3 +11,7 @@ export const DISCOVER_MOVIE_LIST = "DISCOVER_MOVIE_LIST";
 export const DISCOVER_TV_LIST = "DISCOVER_TV_LIST";
 
 export const ADD_TO_CART = "ADD_TO_CART";
+
+export const LOGIN_REQUEST = "LOGIN_REQUEST";
+export const LOGIN_FAIL = "LOGIN_FAIL";
+export const REGISTER_FAIL = "REGISTER_FAIL";
