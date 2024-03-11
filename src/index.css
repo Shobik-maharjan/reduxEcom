@@ -10,15 +10,30 @@
 
 /* Customize scrollbar appearance */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
   scrollbar-width: thin;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #4c4c4c; /* Customize thumb color */
+  background-color: #7e7e7e; /* Customize thumb color */
+  border-radius: 20px;
+  margin-top: -60px;
 }
 
-/* Hide scrollbar track */
 ::-webkit-scrollbar-track {
-  background-color: transparent;
+  background-color: aqua;
+  border-radius: 20px;
+}
+
+/* Styles for the default scrollbar buttons */
+::-webkit-scrollbar-button {
+  background-color: #333; /* Background color of the buttons */
+  width: 16px; /* Width of the buttons */
+  height: 16px; /* Height of the buttons */
+}
+
+/* Styles for the default scrollbar buttons on hover */
+::-webkit-scrollbar-button:hover {
+  background-color: #7e7e7e; /* Background color of the buttons on hover
+*/
 }

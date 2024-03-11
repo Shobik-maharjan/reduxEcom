@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -7,6 +7,7 @@ import {
   trendingMovieList,
   upComingMovieList,
 } from "../redux/actions/movieActions";
+import { useDraggable } from "react-use-draggable-scroll";
 
 const imgUrl = import.meta.env.VITE_IMAGE_URL;
 
@@ -20,6 +21,13 @@ const Home = () => {
     dispatch(popularMovieList());
   }, []);
 
+  const createContainerRef = () => {
+    const containerRef =
+      useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
+    const { events } = useDraggable(containerRef);
+    return { containerRef, events };
+  };
+
   const Card = ({
     img,
     title,
@@ -30,7 +38,7 @@ const Home = () => {
     movieId: any;
   }) => (
     <>
-      <div className="min-w-60 mt-2 ">
+      <div className="min-w-60 mt-2">
         <Link to={`/movie/${movieId}`}>
           <img
             className="card cursor-pointer hover:opacity-80 rounded-xl"
@@ -43,22 +51,63 @@ const Home = () => {
     </>
   );
 
-  const Row = ({ title, arr = [] }: { title: string; arr: any[] }) => (
-    <div className="row w-full mt-4">
-      <h2 className="pl-4 font-bold text-2xl">{title}</h2>
+  const Row = ({ title, arr = [] }: { title: string; arr: any[] }) => {
+    const { containerRef, events } = createContainerRef();
 
-      <div className="w-full flex gap-2 overflow-x-scroll snap-x snap-mandatory px-4">
-        {arr.map((item, index) => (
-          <Card
-            key={index}
-            img={`${imgUrl}/${item.poster_path}`}
-            title={`${item.original_title}`}
-            movieId={`${item.id}`}
-          />
-        ))}
+    const scrollLeft = () => {
+      if (containerRef.current) {
+        console.log("left click");
+        containerRef.current.scrollTo({
+          left: containerRef.current.scrollLeft - 240,
+          behavior: "smooth",
+        });
+      }
+    };
+
+    const scrollRight = () => {
+      if (containerRef.current) {
+        console.log("right click");
+        containerRef.current.scrollTo({
+          left: containerRef.current.scrollLeft + 240,
+          behavior: "smooth",
+        });
+      }
+    };
+
+    return (
+      <div className="row w-full mt-4 relative">
+        <h2 className="pl-4 font-bold text-2xl">{title}</h2>
+        <div className="scroll-controls flex justify-between w-full px-4 absolute top-48 ">
+          <button
+            onClick={scrollLeft}
+            className="text-3xl text-white bg-black z-20 px-4 py-2 rounded-full hover:opacity-85"
+          >
+            &lt;
+          </button>
+          <button
+            onClick={scrollRight}
+            className="text-3xl text-white z-20 bg-black px-4 py-2 rounded-full hover:opacity-85"
+          >
+            &gt;
+          </button>
+        </div>
+        <div
+          className="w-full flex gap-2 overflow-x-hidden scrollbar-hide px-4"
+          ref={containerRef}
+          {...events}
+        >
+          {arr.map((item, index) => (
+            <Card
+              key={index}
+              img={`${imgUrl}/${item.poster_path}`}
+              title={`${item.original_title}`}
+              movieId={`${item.id}`}
+            />
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <>
