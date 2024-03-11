@@ -3,15 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../redux/actions/userActions";
 import { useEffect, useState } from "react";
+import { RxAvatar } from "react-icons/rx";
+import { FaRegUser } from "react-icons/fa";
+import { IoLogOutOutline } from "react-icons/io5";
+import { FaUserTie } from "react-icons/fa";
+
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [showLogout, setShowLogout] = useState<boolean>(false);
 
-  const handleLogoutClick = () => {
-    setShowLogout((prevState) => !prevState);
-  };
+  // const handleLogoutClick = () => {
+  //   setShowLogout((prevState) => !prevState);
+  // };
 
   const user = useSelector((state: any) => state.userList);
   // const username = user.userList[0]?.username;
@@ -46,7 +51,7 @@ const Navbar = () => {
   };
   return (
     <>
-      <div className="sticky top-0 w-full z-10 " style={navbarStyle}>
+      <div className="sticky top-0 w-full z-40 " style={navbarStyle}>
         <div className="flex justify-between  items-center p-4">
           <div
             className="logo text-white cursor-pointer text-2xl"
@@ -75,16 +80,36 @@ const Navbar = () => {
               <li className="px-2.5">
                 <Link to={"/my-list"}>My&nbsp;List</Link>
               </li>
-              <li className="px-2.5">
-                <button onClick={handleLogoutClick}>{username}</button>
+              <li className="px-2.5 relative">
+                <RxAvatar
+                  className="text-2xl cursor-pointer"
+                  onMouseEnter={() => setShowLogout(true)}
+                />
                 {showLogout && (
-                  <div className="absolute right-3  mt-5 ">
-                    <button
-                      className="text-lg bg-cyan-600 hover:opacity-90 p-2 rounded text-white"
-                      onClick={() => dispatch<any>(logoutUser())}
-                    >
-                      Logout
-                    </button>
+                  <div
+                    className={`absolute right-0 overflow-hidden w-fit bg-black/80 p-4 mt-6 min-w-32 cursor-pointer transition-opacity duration-300 ease-in-out opacity-0 ${
+                      showLogout ? "opacity-100" : ""
+                    }`}
+                    onMouseEnter={() => setShowLogout(true)}
+                    onMouseLeave={() => setShowLogout(false)}
+                  >
+                    <div>
+                      <div className="flex mb-2 items-center hover:underline">
+                        <FaUserTie className="mr-2" />
+                        {username}
+                      </div>
+                      <div className="account flex items-center mb-2 cursor-pointer hover:underline">
+                        <FaRegUser className="mr-2" />
+                        Account
+                      </div>
+                      <div
+                        className="flex items-center cursor-pointer hover:underline"
+                        onClick={() => dispatch<any>(logoutUser())}
+                      >
+                        <IoLogOutOutline className="mr-2" />
+                        Logout
+                      </div>
+                    </div>
                   </div>
                 )}
               </li>

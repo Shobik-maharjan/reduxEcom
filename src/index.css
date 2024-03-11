@@ -20,11 +20,6 @@
   margin-top: -60px;
 }
 
-::-webkit-scrollbar-track {
-  background-color: aqua;
-  border-radius: 20px;
-}
-
 /* Styles for the default scrollbar buttons */
 ::-webkit-scrollbar-button {
   background-color: #333; /* Background color of the buttons */

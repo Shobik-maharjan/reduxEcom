@@ -10,9 +10,10 @@ type userType = loginType & {
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig/config";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import {
   LOGIN_FAIL,
   LOGIN_REQUEST,
@@ -29,6 +30,9 @@ export const registerUser =
     try {
       const users = await createUserWithEmailAndPassword(auth, email, password);
 
+      await updateProfile(users.user, {
+        displayName: userName,
+      });
       const user = {
         userName,
         email: users.user.email,
@@ -69,26 +73,19 @@ export const loginUser =
       });
 
       const user = await signInWithEmailAndPassword(auth, email, password);
-      console.log(user);
+      // console.log(user);
       toast.success("user login successfully");
       localStorage.setItem("user", user.user.uid);
-      const userDetail = await getDocs(collection(db, "users"));
-      userDetail.docs.map((doc: any) => {
-        const userId = doc.data().user.uid;
-        if (user.user.uid === userId) {
-          localStorage.setItem("userName", doc.data().user.userName);
-          // console.log(userId);
-          setTimeout(() => {
-            dispatch({
-              type: LOGIN_USER_SUCCESS,
-              payload: {
-                email,
-                uid: user.user.uid,
-              },
-            });
-          }, 1000);
-        }
-      });
+      localStorage.setItem("userName", user.user.displayName || "");
+      setTimeout(() => {
+        dispatch({
+          type: LOGIN_USER_SUCCESS,
+          payload: {
+            email,
+            uid: user.user.uid,
+          },
+        });
+      }, 1000);
     } catch (error) {
       dispatch({
         type: LOGIN_FAIL,

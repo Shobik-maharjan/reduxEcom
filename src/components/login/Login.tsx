@@ -14,16 +14,10 @@ const Login = () => {
   const { loading, fail, message, userList } = useSelector(
     (state: any) => state.userList
   );
-  console.log("loading", loading);
-
-  console.log(fail);
 
   useEffect(() => {
     if (fail) {
-      console.log("reset");
-
       setPassword("");
-      console.log(password);
     }
   }, [fail]);
 

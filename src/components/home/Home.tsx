@@ -8,6 +8,8 @@ import {
   upComingMovieList,
 } from "../redux/actions/movieActions";
 import { useDraggable } from "react-use-draggable-scroll";
+import { FaLessThan } from "react-icons/fa";
+import { FaGreaterThan } from "react-icons/fa";
 
 const imgUrl = import.meta.env.VITE_IMAGE_URL;
 
@@ -56,7 +58,6 @@ const Home = () => {
 
     const scrollLeft = () => {
       if (containerRef.current) {
-        console.log("left click");
         containerRef.current.scrollTo({
           left: containerRef.current.scrollLeft - 240,
           behavior: "smooth",
@@ -66,7 +67,6 @@ const Home = () => {
 
     const scrollRight = () => {
       if (containerRef.current) {
-        console.log("right click");
         containerRef.current.scrollTo({
           left: containerRef.current.scrollLeft + 240,
           behavior: "smooth",
@@ -80,15 +80,16 @@ const Home = () => {
         <div className="scroll-controls flex justify-between w-full px-4 absolute top-48 ">
           <button
             onClick={scrollLeft}
-            className="text-3xl text-white bg-black z-20 px-4 py-2 rounded-full hover:opacity-85"
+            className="text-3xl text-white bg-black z-10 p-4 rounded-full hover:opacity-85"
           >
-            &lt;
+            <FaLessThan />
+            {/* &lt; */}
           </button>
           <button
             onClick={scrollRight}
-            className="text-3xl text-white z-20 bg-black px-4 py-2 rounded-full hover:opacity-85"
+            className="text-3xl text-white z-10 bg-black p-4 rounded-full hover:opacity-85"
           >
-            &gt;
+            <FaGreaterThan />
           </button>
         </div>
         <div
