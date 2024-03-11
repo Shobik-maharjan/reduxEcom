@@ -13,10 +13,12 @@ const SinglePage = () => {
   const [video, setVideo] = useState<any>();
   const dispatch: any = useDispatch();
 
+  const { "*": value } = movieId;
+
   const [singleMovieData, setSingleMovieData] = useState<any>("");
   const fetchData = async () => {
     const singleMovieData = await axios.get(
-      `${url}/movie/${movieId.movieId}?api_key=${apiKey}`
+      `${url}/${value}?api_key=${apiKey}`
     );
     setSingleMovieData(singleMovieData.data);
     // console.log(`${imgUrl}/${singleMovieData.sdata.poster_path}`);
@@ -24,7 +26,7 @@ const SinglePage = () => {
 
   const fetchVideo = async () => {
     const videoUrl = await axios.get(
-      `${url}/movie/${movieId.movieId}/videos?api_key=${apiKey}`
+      `${url}/${value}/videos?api_key=${apiKey}`
     );
     const keys = videoUrl.data.results.map(
       (item: any) => `https://www.youtube.com/watch?v=${item.key}`
@@ -40,8 +42,14 @@ const SinglePage = () => {
 
   return (
     <>
-      <div>
-        <ReactPlayer url={video} controls={true} width="100%" height="680px" />
+      <div className="m-auto">
+        <ReactPlayer
+          url={video}
+          controls={true}
+          width="70%"
+          height="480px"
+          style={{ margin: "auto" }}
+        />
       </div>
       <div>
         {singleMovieData && (

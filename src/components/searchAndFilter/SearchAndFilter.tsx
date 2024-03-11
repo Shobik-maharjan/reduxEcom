@@ -27,7 +27,7 @@ const SearchAndFilter = () => {
   }, []);
   return (
     <>
-      <div className="px-6 pt-6">
+      <div className="px-4 pt-6">
         <h2 className="text-2xl font-bold mb-6 uppercase">{title}</h2>
         <div className="flex">
           <div className="mb-4 mr-2">
@@ -43,17 +43,17 @@ const SearchAndFilter = () => {
             <select
               name=""
               id=""
-              className="border-2 border-black px-4 py-2 rounded-md"
+              className="border-2 border-black px-4 py-2.5 rounded-md cursor-pointer"
             >
               {movieGenre &&
                 movieGenre.map((item: any) => (
-                  <option value="asd" key={item}>
+                  <option value={item} key={item}>
                     {item}
                   </option>
                 ))}
               {genre &&
                 genre.map((item: any) => (
-                  <option value="asd" key={item}>
+                  <option value={item} key={item}>
                     {item}
                   </option>
                 ))}

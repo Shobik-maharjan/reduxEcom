@@ -40,15 +40,19 @@ const Navbar = () => {
   const navbarStyle = {
     backgroundColor: scrolling ? "hsl(0,0%,0%,0.8)" : "black ",
   };
+  const handleLogoClick = () => {
+    navigate("/");
+    window.scrollTo(0, 0);
+  };
   return (
     <>
-      <div className="sticky top-0 w-full">
-        <div
-          className="flex justify-around p-4 items-center"
-          style={navbarStyle}
-        >
-          <div className="logo text-white">
-            <Link to={"/"}>Rotten Tomatoess</Link>
+      <div className="sticky top-0 w-full z-10 " style={navbarStyle}>
+        <div className="flex justify-between  items-center p-4">
+          <div
+            className="logo text-white cursor-pointer text-2xl"
+            onClick={handleLogoClick}
+          >
+            Rotten Tomatoes
           </div>
           <div className="search w-5/12">
             <input
@@ -74,9 +78,9 @@ const Navbar = () => {
               <li className="px-2.5">
                 <button onClick={handleLogoutClick}>{username}</button>
                 {showLogout && (
-                  <div className="absolute right-[2%] m-2 bg-white px-6 py-2">
+                  <div className="absolute right-3  mt-5 ">
                     <button
-                      className="text-lg bg-emerald-500 hover:bg-emerald-600 p-2 rounded text-white"
+                      className="text-lg bg-cyan-600 hover:opacity-90 p-2 rounded text-white"
                       onClick={() => dispatch<any>(logoutUser())}
                     >
                       Logout

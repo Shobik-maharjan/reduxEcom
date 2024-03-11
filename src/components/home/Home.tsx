@@ -30,10 +30,10 @@ const Home = () => {
     movieId: any;
   }) => (
     <>
-      <div className="min-w-60 mt-2">
-        <Link to={`/singlepage/${movieId}`}>
+      <div className="min-w-60 mt-2 ">
+        <Link to={`/movie/${movieId}`}>
           <img
-            className="card cursor-pointer hover:opacity-80 rounded-md"
+            className="card cursor-pointer hover:opacity-80 rounded-xl"
             src={img}
             alt="cover"
           />
@@ -44,10 +44,10 @@ const Home = () => {
   );
 
   const Row = ({ title, arr = [] }: { title: string; arr: any[] }) => (
-    <div className="row w-full">
-      <h2 className="pl-2 font-bold text-xl">{title}</h2>
+    <div className="row w-full mt-4">
+      <h2 className="pl-4 font-bold text-2xl">{title}</h2>
 
-      <div className="w-full flex gap-2 overflow-x-scroll snap-x snap-mandatory">
+      <div className="w-full flex gap-2 overflow-x-scroll snap-x snap-mandatory px-4">
         {arr.map((item, index) => (
           <Card
             key={index}
@@ -72,7 +72,7 @@ const Home = () => {
             : "rgb(16,16,16);}",
         }}
       >
-        <div className="movie-name p-14 pt-[16%]">
+        <div className="movie-name pl-4 pt-[16%]">
           {movieLists.popularMovieList && (
             <>
               <h1 className="text-white text-6xl pb-4">
@@ -85,9 +85,9 @@ const Home = () => {
 
               <button
                 type="button"
-                className="bg-gray-200 hover:opacity-95 rounded-xl px-4 py-2 mt-4"
+                className="bg-cyan-600 font-bold hover:opacity-95 rounded-xl px-4 py-2 mt-4"
               >
-                <Link to={`/singlepage/${movieLists?.popularMovieList[0]?.id}`}>
+                <Link to={`/movie/${movieLists?.popularMovieList[0]?.id}`}>
                   Watch Now
                 </Link>
               </button>

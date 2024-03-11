@@ -15,13 +15,13 @@ const Movie = () => {
 
   return (
     <>
-      <div className="p-6">
+      <div className="p-4">
         {/* <h2 className="text-2xl font-bold mb-6">MOVIES</h2> */}
         {movieLists && movieLists.discoverMovieList && (
           <div className="flex gap-2.5 flex-wrap justify-between">
             {movieLists.discoverMovieList.map((item: any, i: any) => (
               <Link
-                to={`/singlepage/${movieLists.discoverMovieList[i].id}`}
+                to={`/movie/${movieLists.discoverMovieList[i].id}`}
                 key={item.id}
               >
                 <div className="mb-4 w-64">

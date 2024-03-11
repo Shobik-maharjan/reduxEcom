@@ -15,15 +15,12 @@ const TvShow = () => {
 
   return (
     <>
-      <div className="p-6">
+      <div className="p-4">
         {/* <h2 className="text-2xl font-bold mb-6">TV SHOWS</h2> */}
         {tvLists && tvLists.discoverTvList && (
           <div className="flex gap-2.5 flex-wrap justify-between">
-            {tvLists.discoverTvList.map((item: any) => (
-              <Link
-                to={`/singlepage/${tvLists.discoverTvList.id}`}
-                key={item.id}
-              >
+            {tvLists.discoverTvList.map((item: any, i: any) => (
+              <Link to={`/tv/${tvLists.discoverTvList[i].id}`} key={item.id}>
                 <div className="mb-2 w-64">
                   <img
                     className=" flex rounded-md cursor-pointer hover:opacity-80"

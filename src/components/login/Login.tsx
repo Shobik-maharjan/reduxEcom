@@ -74,7 +74,7 @@ const Login = () => {
       <div className="w-full bg-slate-200 h-screen pt-6">
         <form
           onSubmit={validateCredential}
-          className="w-6/12 m-auto mt-36 bg-white rounded-sm p-4 border rounded-md"
+          className="w-4/12 m-auto mt-36 bg-white rounded-sm p-4 border rounded-md"
         >
           <h2 className="mb-4 m-auto text-center font-bold text-2xl">LOGIN</h2>
           <div className="mb-2">
@@ -120,6 +120,12 @@ const Login = () => {
             >
               LOGIN
             </button>
+          </div>
+
+          <div className="forget-password">
+            <Link to={"/forgot-password"} className="text-blue-500">
+              Forgot Password?
+            </Link>
           </div>
 
           <div>
