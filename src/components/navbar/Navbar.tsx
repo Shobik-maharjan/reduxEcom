@@ -82,12 +82,12 @@ const Navbar = () => {
               </li>
               <li className="px-2.5 relative">
                 <RxAvatar
-                  className="text-2xl cursor-pointer"
+                  className="text-2xl cursor-pointer transition-opacity duration-500 ease-in-out"
                   onMouseEnter={() => setShowLogout(true)}
                 />
                 {showLogout && (
                   <div
-                    className={`absolute right-0 overflow-hidden w-fit bg-black/80 p-4 mt-6 min-w-32 cursor-pointer transition-opacity duration-300 ease-in-out opacity-0 ${
+                    className={`absolute right-0 overflow-hidden w-fit bg-black/80 p-4 mt-6 min-w-32 cursor-pointer transition-opacity duration-500 ease-in-out opacity-0 ${
                       showLogout ? "opacity-100" : ""
                     }`}
                     onMouseEnter={() => setShowLogout(true)}
