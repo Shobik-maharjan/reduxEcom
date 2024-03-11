@@ -43,6 +43,8 @@ const Login = () => {
     if (localStorage.getItem("user")) {
       // localStorage.setItem("user", user.userList[0].uid);
       navigate("/");
+    } else {
+      navigate("/login");
     }
     if (localStorage.getItem("user") !== null) {
       navigate("/");
