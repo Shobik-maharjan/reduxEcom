@@ -5,6 +5,8 @@ import {
   DISCOVER_TV_LIST,
   NOWPLAYING_MOVIE_LIST,
   POPULAR_MOVIE_LIST,
+  RECOMMENDEDATION_LIST,
+  SIMILAR_LIST,
   TRENDING_MOVIE_LIST,
   UPCOMING_MOVIE_LIST,
 } from "../constants/userConstants";
@@ -98,7 +100,7 @@ export const discoverTvList = () => async (dispatch: any) => {
   try {
     const {
       data: { results },
-    } = await axios.get(`${url}/tv/${popular}?api_key=${apiKey}`);
+    } = await axios.get(`${url}/discover/tv?api_key=${apiKey}`);
     const filterResults = results.filter(
       (item: any) => item.poster_path !== null
     );
@@ -108,6 +110,34 @@ export const discoverTvList = () => async (dispatch: any) => {
     });
   } catch (e) {
     console.log(e);
+  }
+};
+
+export const recommendedList = (movieId: any) => async (dispatch: any) => {
+  try {
+    const {
+      data: { results },
+    } = await axios.get(`${url}/${movieId}/recommendations?api_key=${apiKey}`);
+    dispatch({
+      type: RECOMMENDEDATION_LIST,
+      payload: results,
+    });
+  } catch (error: any) {
+    console.log(error);
+  }
+};
+
+export const similarList = (movieId: any) => async (dispatch: any) => {
+  try {
+    const {
+      data: { results },
+    } = await axios.get(`${url}/${movieId}/similar?api_key=${apiKey}`);
+    dispatch({
+      type: SIMILAR_LIST,
+      payload: results,
+    });
+  } catch (error: any) {
+    console.log(error);
   }
 };
 

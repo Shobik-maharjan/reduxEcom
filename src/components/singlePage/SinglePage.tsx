@@ -1,9 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import ReactPlayer from "react-player";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../redux/actions/movieActions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToCart,
+  recommendedList,
+  similarList,
+} from "../redux/actions/movieActions";
+import { useDraggable } from "react-use-draggable-scroll";
 
 const SinglePage = () => {
   const movieId = useParams();
@@ -13,7 +18,11 @@ const SinglePage = () => {
   const [video, setVideo] = useState<any>();
   const dispatch: any = useDispatch();
 
-  const { "*": value } = movieId;
+  const { "*": value }: any = movieId;
+
+  const { recommendedLists, similarLists } = useSelector(
+    (state: any) => state.movieList
+  );
 
   const [singleMovieData, setSingleMovieData] = useState<any>("");
   const fetchData = async () => {
@@ -21,7 +30,6 @@ const SinglePage = () => {
       `${url}/${value}?api_key=${apiKey}`
     );
     setSingleMovieData(singleMovieData.data);
-    // console.log(`${imgUrl}/${singleMovieData.sdata.poster_path}`);
   };
 
   const fetchVideo = async () => {
@@ -32,7 +40,6 @@ const SinglePage = () => {
       (item: any) => `https://www.youtube.com/watch?v=${item.key}`
     );
     setVideo(keys);
-    // console.log(videoUrl);
   };
 
   useEffect(() => {
@@ -40,90 +47,172 @@ const SinglePage = () => {
     fetchData();
   }, []);
 
+  const recommendedListRef: any = useRef(null);
+  const similarListRef: any = useRef(null);
+
+  // Use the useDraggableScroll hook for each list
+  const { events: recommendedListEvents } = useDraggable(recommendedListRef);
+  const { events: similarListEvents } = useDraggable(similarListRef);
+
+  useEffect(() => {
+    if (value) {
+      dispatch(recommendedList(value));
+      dispatch(recommendedList);
+      dispatch(similarList(value));
+    }
+  }, [value]);
+
   return (
     <>
-      <div className="m-auto">
-        <ReactPlayer
-          url={video}
-          controls={true}
-          width="70%"
-          height="480px"
-          style={{ margin: "auto" }}
-        />
+      {/* video */}
+      <div className="flex">
+        <div className="w-6/12">
+          <ReactPlayer
+            url={video}
+            controls={true}
+            width="100%"
+            height="480px"
+            style={{ marginLeft: "10px", marginTop: "10px" }}
+          />
+        </div>
+
+        {/* Descriptopn */}
+        <div className=" w-6/12 mt-4 p-4">
+          {singleMovieData && (
+            <div className="movie-details flex justify-start ">
+              {/* <div className="movie_image w-6/12">
+                <img
+                  src={`${imgUrl}/${singleMovieData.poster_path}`}
+                  alt=""
+                  className="w-full rounded-md"
+                />
+              </div> */}
+              <div className="movie_detail pl-4">
+                <div className="movie_title font-bold text-3xl">
+                  <p>{singleMovieData.original_title}</p>
+                </div>
+                <div>
+                  <p>{singleMovieData.runtime} min</p>
+                </div>
+                <div className="movie_description text-sm py-2">
+                  <p>{singleMovieData.overview}</p>
+                </div>
+                <div className="country flex">
+                  <h2 className="font-bold pr-2">Country:</h2>
+                  <p>
+                    {singleMovieData.production_countries.map(
+                      (item: any) => item.name + ", "
+                    )}
+                  </p>
+                </div>
+                <div className="genres flex">
+                  <h2 className="font-bold pr-2">Genres:</h2>
+                  <p>
+                    {singleMovieData.genres.map(
+                      (item: any) => item.name + ",  "
+                    )}
+                  </p>
+                </div>
+                <div className="genres flex">
+                  <h2 className="font-bold pr-2">Release Date:</h2>
+                  <p>{singleMovieData.release_date}</p>
+                </div>
+                <div className="genres flex">
+                  <h2 className="font-bold pr-2">Duration:</h2>
+                  <p>{singleMovieData.runtime} min</p>
+                </div>
+                <div className="production flex">
+                  <h2 className="font-bold pr-2">Production:</h2>
+                  <p>
+                    {singleMovieData.production_companies.map(
+                      (item: any) => item.name + ", "
+                    )}
+                  </p>
+                </div>
+                <div className="tags flex">
+                  <h2 className="font-bold pr-2">Tags:</h2>
+                  <p>{singleMovieData.tagline}</p>
+                </div>
+                <div className="vote flex">
+                  <h2 className="font-bold pr-2">Vote:</h2>
+                  <p>{singleMovieData.vote_count}</p>
+                </div>
+
+                <div className="my-list">
+                  <button
+                    className="bg-gray-200 px-4 py-2 rounded-md hover:opacity-95 mt-2"
+                    onClick={() =>
+                      dispatch(addToCart(singleMovieData.original_title))
+                    }
+                  >
+                    Add to List
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-      <div>
-        {singleMovieData && (
-          <div className="movie-details flex justify-start mt-4 p-4">
-            <div className="movie_image w-3/12">
-              <img
-                src={`${imgUrl}/${singleMovieData.poster_path}`}
-                alt=""
-                className="w-full rounded-md"
-              />
-            </div>
-
-            <div className="movie_detail pl-4">
-              <div className="movie_title font-bold text-3xl">
-                <p>{singleMovieData.original_title}</p>
+      {/* recommendation list */}
+      <div
+        className="recommendation-list mt-6"
+        ref={recommendedListRef}
+        {...recommendedListEvents}
+      >
+        {recommendedLists && recommendedLists.length !== 0 ? (
+          <div>
+            <h2 className="pl-4 font-bold text-2xl">Recommended</h2>
+            {recommendedLists && (
+              <div
+                className="px-4 w-full flex gap-2 overflow-x-hidden scrollbar-hide"
+                ref={recommendedListRef}
+                {...recommendedListEvents}
+              >
+                {recommendedLists.map((item: any) => (
+                  <div className="min-w-52" key={item.id}>
+                    <img
+                      className="flex rounded-md cursor-pointer hover:opacity-80"
+                      src={`${imgUrl}/${item.poster_path}`}
+                      alt=""
+                    />
+                    <p>{item.original_title}</p>
+                  </div>
+                ))}
               </div>
-              <div>
-                <p>{singleMovieData.runtime} min</p>
-              </div>
-              <div className="movie_description text-sm py-3">
-                <p>{singleMovieData.overview}</p>
-              </div>
-              <div className="country flex">
-                <h2 className="font-bold pr-2">Country:</h2>
-                <p>
-                  {singleMovieData.production_countries.map(
-                    (item: any) => item.name + ", "
-                  )}
-                </p>
-              </div>
-              <div className="genres flex">
-                <h2 className="font-bold pr-2">Genres:</h2>
-                <p>
-                  {singleMovieData.genres.map((item: any) => item.name + ",  ")}
-                </p>
-              </div>
-              <div className="genres flex">
-                <h2 className="font-bold pr-2">Release Date:</h2>
-                <p>{singleMovieData.release_date}</p>
-              </div>
-              <div className="genres flex">
-                <h2 className="font-bold pr-2">Duration:</h2>
-                <p>{singleMovieData.runtime} min</p>
-              </div>
-              <div className="production flex">
-                <h2 className="font-bold pr-2">Production:</h2>
-                <p>
-                  {singleMovieData.production_companies.map(
-                    (item: any) => item.name + ", "
-                  )}
-                </p>
-              </div>
-              <div className="tags flex">
-                <h2 className="font-bold pr-2">Tags:</h2>
-                <p>{singleMovieData.tagline}</p>
-              </div>
-              <div className="vote flex">
-                <h2 className="font-bold pr-2">Vote:</h2>
-                <p>{singleMovieData.vote_count}</p>
-              </div>
-
-              <div className="my-list">
-                <button
-                  className="bg-gray-200 px-4 py-2 rounded-md hover:opacity-95 mt-2"
-                  onClick={() =>
-                    dispatch(addToCart(singleMovieData.original_title))
-                  }
-                >
-                  Add to List
-                </button>
-              </div>
-            </div>
+            )}
           </div>
-        )}
+        ) : null}
+      </div>
+
+      {/* suggestion list */}
+      <div
+        className="suggestion-list"
+        ref={similarListRef}
+        {...similarListEvents}
+      >
+        {similarLists && similarLists.length !== 0 ? (
+          <div>
+            <h2 className="pl-4 font-bold text-2xl">Similar</h2>
+            {similarLists && (
+              <div
+                className="w-full flex gap-2 overflow-x-hidden scrollbar-hide px-4"
+                ref={similarListRef}
+                {...similarListEvents}
+              >
+                {similarLists.map((item: any) => (
+                  <div className="min-w-52" key={item.id}>
+                    <img
+                      className="flex rounded-xl cursor-pointer hover:opacity-80"
+                      src={`${imgUrl}/${item.poster_path}`}
+                      alt=""
+                    />
+                    <p>{item.original_title}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : null}
       </div>
     </>
   );

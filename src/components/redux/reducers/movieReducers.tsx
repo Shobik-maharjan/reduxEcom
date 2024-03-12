@@ -4,6 +4,8 @@ import {
   DISCOVER_TV_LIST,
   NOWPLAYING_MOVIE_LIST,
   POPULAR_MOVIE_LIST,
+  RECOMMENDEDATION_LIST,
+  SIMILAR_LIST,
   TRENDING_MOVIE_LIST,
   UPCOMING_MOVIE_LIST,
 } from "../constants/userConstants";
@@ -18,33 +20,43 @@ const movieReducers = (state: any = [], action: any) => {
       //   console.log(action);
       return {
         ...state,
-        nowPlayingMovieList: action.payload,
+        nowPlayingMovieLists: action.payload,
       };
     case TRENDING_MOVIE_LIST:
       return {
         ...state,
-        trendingMovieList: action.payload,
+        trendingMovieLists: action.payload,
       };
     case UPCOMING_MOVIE_LIST:
       return {
         ...state,
-        upcomingMovieList: action.payload,
+        upcomingMovieLists: action.payload,
       };
     case POPULAR_MOVIE_LIST:
       return {
         ...state,
-        popularMovieList: action.payload,
+        popularMovieLists: action.payload,
       };
     case DISCOVER_MOVIE_LIST:
       return {
         ...state,
-        discoverMovieList: action.payload,
+        discoverMovieLists: action.payload,
         totalPage: action.totalPage,
       };
     case DISCOVER_TV_LIST:
       return {
         ...state,
-        discoverTvList: action.payload,
+        discoverTvLists: action.payload,
+      };
+    case RECOMMENDEDATION_LIST:
+      return {
+        ...state,
+        recommendedLists: action.payload,
+      };
+    case SIMILAR_LIST:
+      return {
+        ...state,
+        similarLists: action.payload,
       };
     case ADD_TO_CART:
       return {

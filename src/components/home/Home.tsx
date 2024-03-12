@@ -15,7 +15,12 @@ const imgUrl = import.meta.env.VITE_IMAGE_URL;
 
 const Home = () => {
   const dispatch: any = useDispatch();
-  const movieLists = useSelector((state: any) => state.movieList);
+  const {
+    nowPlayingMovieLists,
+    trendingMovieLists,
+    upcomingMovieLists,
+    popularMovieLists,
+  } = useSelector((state: any) => state.movieList);
   useEffect(() => {
     dispatch(nowPlayingMovieList());
     dispatch(trendingMovieList());
@@ -80,14 +85,14 @@ const Home = () => {
         <div className="scroll-controls flex justify-between w-full px-4 absolute top-48 ">
           <button
             onClick={scrollLeft}
-            className="text-3xl text-white bg-black z-10 p-4 rounded-full hover:opacity-85"
+            className="text-xl text-white bg-black/70 z-10 px-2 py-6 hover:bg-black/90 backdrop-blur"
           >
             <FaLessThan />
             {/* &lt; */}
           </button>
           <button
             onClick={scrollRight}
-            className="text-3xl text-white z-10 bg-black p-4 rounded-full hover:opacity-85"
+            className="text-xl text-white z-10 bg-black/70 px-2 py-6 hover:bg-black/90 backdrop-blur"
           >
             <FaGreaterThan />
           </button>
@@ -113,33 +118,31 @@ const Home = () => {
   return (
     <>
       <div
-        className="banner bg-cover mb-5"
+        className="banner bg-cover mb-5 "
         style={{
           height: "80vh",
           objectFit: "cover",
-          backgroundImage: movieLists.popularMovieList
-            ? `url(${`${imgUrl}/${movieLists.popularMovieList[0].poster_path}`})`
+          backgroundImage: popularMovieLists
+            ? `url(${`${imgUrl}/${popularMovieLists[0].poster_path}`})`
             : "rgb(16,16,16);}",
         }}
       >
-        <div className="movie-name pl-4 pt-[16%]">
-          {movieLists.popularMovieList && (
+        <div className="movie-name pl-4 py-[20%] backdrop-blur-sm">
+          {popularMovieLists && (
             <>
-              <h1 className="text-white text-6xl pb-4">
-                {movieLists.popularMovieList[0].original_title}
+              <h1 className="text-white text-6xl pb-4 ">
+                {popularMovieLists[0].original_title}
               </h1>
 
               <p className="w-1/2 text-white">
-                {movieLists.popularMovieList[0].overview}
+                {popularMovieLists[0].overview}
               </p>
 
               <button
                 type="button"
                 className="bg-cyan-600 font-bold hover:opacity-95 rounded-xl px-4 py-2 mt-4"
               >
-                <Link to={`/movie/${movieLists?.popularMovieList[0]?.id}`}>
-                  Watch Now
-                </Link>
+                <Link to={`/movie/${popularMovieLists[0]?.id}`}>Watch Now</Link>
               </button>
             </>
           )}
@@ -147,13 +150,10 @@ const Home = () => {
       </div>
 
       <div className="Movies List">
-        <Row
-          title={"Now Playing Movies"}
-          arr={movieLists.nowPlayingMovieList}
-        />
-        <Row title={"Trending Movies"} arr={movieLists.trendingMovieList} />
-        <Row title={"Upcoming Movies"} arr={movieLists.upcomingMovieList} />
-        <Row title={"Popular Movies"} arr={movieLists.popularMovieList} />
+        <Row title={"Now Playing Movies"} arr={nowPlayingMovieLists} />
+        <Row title={"Trending Movies"} arr={trendingMovieLists} />
+        <Row title={"Upcoming Movies"} arr={upcomingMovieLists} />
+        <Row title={"Popular Movies"} arr={popularMovieLists} />
       </div>
 
       <section className="Home"></section>

@@ -1,4 +1,5 @@
 import {
+  LOADING,
   LOGIN_FAIL,
   LOGIN_REQUEST,
   LOGIN_USER_SUCCESS,
@@ -35,6 +36,7 @@ const userReducers = (state: any = initialData, action: any) => {
         userList: [action.payload],
         loading: false,
       };
+
     case LOGIN_FAIL:
     case REGISTER_FAIL:
       return {
@@ -48,11 +50,11 @@ const userReducers = (state: any = initialData, action: any) => {
         ...state,
         userList: [],
       };
-    case "LOADING":
+    case LOADING:
       return {
         userList: [action.payload],
       };
-    case "LOGIN_FAIL":
+    case LOGIN_FAIL:
       return {
         userList: [action.payload],
       };

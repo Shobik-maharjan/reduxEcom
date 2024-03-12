@@ -7,7 +7,7 @@ const TvShow = () => {
   const imgUrl = import.meta.env.VITE_IMAGE_URL;
 
   const dispatch = useDispatch<any>();
-  const tvLists = useSelector((state: any) => state.movieList);
+  const { discoverTvLists } = useSelector((state: any) => state.movieList);
 
   useEffect(() => {
     dispatch(discoverTvList());
@@ -17,11 +17,11 @@ const TvShow = () => {
     <>
       <div className="p-4">
         {/* <h2 className="text-2xl font-bold mb-6">TV SHOWS</h2> */}
-        {tvLists && tvLists.discoverTvList && (
+        {discoverTvLists && (
           <div className="flex gap-2.5 flex-wrap justify-between">
-            {tvLists.discoverTvList.map((item: any, i: any) => (
-              <Link to={`/tv/${tvLists.discoverTvList[i].id}`} key={item.id}>
-                <div className="mb-2 w-64">
+            {discoverTvLists.map((item: any, i: any) => (
+              <Link to={`/tv/${discoverTvLists[i].id}`} key={item.id}>
+                <div className="mb-2 w-56">
                   <img
                     className=" flex rounded-md cursor-pointer hover:opacity-80"
                     src={`${imgUrl}/${item.poster_path}`}

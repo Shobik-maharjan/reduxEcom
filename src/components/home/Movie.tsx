@@ -8,8 +8,9 @@ const Movie = () => {
   const dispatch: any = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const movieLists = useSelector((state: any) => state.movieList);
-  const totalPage = movieLists.totalPage;
+  const { discoverMovieLists, totalPage } = useSelector(
+    (state: any) => state.movieList
+  );
 
   useEffect(() => {
     dispatch(discoverMovieList(currentPage));
@@ -60,13 +61,10 @@ const Movie = () => {
     <>
       <div className="p-4">
         {/* <h2 className="text-2xl font-bold mb-6">MOVIES</h2> */}
-        {movieLists && movieLists.discoverMovieList && (
+        {discoverMovieLists && (
           <div className="flex gap-2.5 flex-wrap justify-between">
-            {movieLists.discoverMovieList.map((item: any, i: any) => (
-              <Link
-                to={`/movie/${movieLists.discoverMovieList[i].id}`}
-                key={item.id}
-              >
+            {discoverMovieLists.map((item: any, i: any) => (
+              <Link to={`/movie/${discoverMovieLists[i].id}`} key={item.id}>
                 <div className="mb-4 w-56">
                   <img
                     className="flex rounded-md cursor-pointer hover:opacity-80"

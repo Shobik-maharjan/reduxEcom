@@ -6,29 +6,28 @@
   html {
     font-family: Arial, Helvetica, sans-serif;
   }
-}
+  /* Customize scrollbar appearance */
+  ::-webkit-scrollbar {
+    width: 8px;
+    scrollbar-width: thin;
+  }
 
-/* Customize scrollbar appearance */
-::-webkit-scrollbar {
-  width: 8px;
-  scrollbar-width: thin;
-}
+  ::-webkit-scrollbar-thumb {
+    background-color: #7e7e7e; /* Customize thumb color */
+    border-radius: 20px;
+    margin-top: -60px;
+  }
 
-::-webkit-scrollbar-thumb {
-  background-color: #7e7e7e; /* Customize thumb color */
-  border-radius: 20px;
-  margin-top: -60px;
-}
+  /* Styles for the default scrollbar buttons */
+  ::-webkit-scrollbar-button {
+    background-color: #333; /* Background color of the buttons */
+    width: 16px; /* Width of the buttons */
+    height: 16px; /* Height of the buttons */
+  }
 
-/* Styles for the default scrollbar buttons */
-::-webkit-scrollbar-button {
-  background-color: #333; /* Background color of the buttons */
-  width: 16px; /* Width of the buttons */
-  height: 16px; /* Height of the buttons */
-}
-
-/* Styles for the default scrollbar buttons on hover */
-::-webkit-scrollbar-button:hover {
-  background-color: #7e7e7e; /* Background color of the buttons on hover
+  /* Styles for the default scrollbar buttons on hover */
+  ::-webkit-scrollbar-button:hover {
+    background-color: #7e7e7e; /* Background color of the buttons on hover
 */
+  }
 }
