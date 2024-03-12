@@ -113,7 +113,7 @@ const SinglePage = () => {
 
               <div className="my-list">
                 <button
-                  className="bg-gray-200 px-4 py-2 rounded-md hover:opacity-95"
+                  className="bg-gray-200 px-4 py-2 rounded-md hover:opacity-95 mt-2"
                   onClick={() =>
                     dispatch(addToCart(singleMovieData.original_title))
                   }

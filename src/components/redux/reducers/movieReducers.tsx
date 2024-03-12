@@ -39,6 +39,7 @@ const movieReducers = (state: any = [], action: any) => {
       return {
         ...state,
         discoverMovieList: action.payload,
+        totalPage: action.totalPage,
       };
     case DISCOVER_TV_LIST:
       return {

@@ -71,19 +71,28 @@ export const popularMovieList = () => async (dispatch: any) => {
   }
 };
 
-export const discoverMovieList = () => async (dispatch: any) => {
-  try {
-    const {
-      data: { results },
-    } = await axios.get(`${url}/discover/movie?api_key=${apiKey}`);
-    dispatch({
-      type: DISCOVER_MOVIE_LIST,
-      payload: results,
-    });
-  } catch (e) {
-    console.log(e);
-  }
-};
+export const discoverMovieList =
+  (page = 1) =>
+  async (dispatch: any) => {
+    try {
+      const {
+        data: { results },
+      } = await axios.get(
+        `${url}/discover/movie?api_key=${apiKey}&page=${page}`
+      );
+      const arr: any = await axios.get(
+        `${url}/discover/movie?api_key=${apiKey}&page=${page}}`
+      );
+
+      dispatch({
+        type: DISCOVER_MOVIE_LIST,
+        payload: results,
+        totalPage: arr.data.total_pages,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
 export const discoverTvList = () => async (dispatch: any) => {
   try {

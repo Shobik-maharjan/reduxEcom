@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { discoverMovieList } from "../redux/actions/movieActions";
 import { Link } from "react-router-dom";
@@ -6,12 +6,55 @@ import { Link } from "react-router-dom";
 const Movie = () => {
   const imgUrl = import.meta.env.VITE_IMAGE_URL;
   const dispatch: any = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
 
   const movieLists = useSelector((state: any) => state.movieList);
+  const totalPage = movieLists.totalPage;
 
   useEffect(() => {
-    dispatch(discoverMovieList());
-  }, []);
+    dispatch(discoverMovieList(currentPage));
+  }, [currentPage]);
+
+  const handlePageChange = (newPage: any) => {
+    setCurrentPage(newPage);
+  };
+
+  const getTotalPages = () => {
+    return totalPage > 0 ? totalPage : 1;
+  };
+
+  const renderPageButtons = () => {
+    const totalPages = getTotalPages();
+    const buttons = [];
+
+    const visiblePages = 5; // You can adjust this number as needed
+    const halfVisiblePages = Math.floor(visiblePages / 2);
+
+    let startPage = Math.max(1, currentPage - halfVisiblePages);
+    let endPage = Math.min(startPage + visiblePages - 1, totalPages);
+
+    if (endPage - startPage + 1 < visiblePages) {
+      startPage = Math.max(1, endPage - visiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={
+            currentPage === i
+              ? "bg-black text-white rounded-full px-2"
+              : "" + "px-2 "
+          }
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return buttons;
+  };
 
   return (
     <>
@@ -24,7 +67,7 @@ const Movie = () => {
                 to={`/movie/${movieLists.discoverMovieList[i].id}`}
                 key={item.id}
               >
-                <div className="mb-4 w-64">
+                <div className="mb-4 w-56">
                   <img
                     className="flex rounded-md cursor-pointer hover:opacity-80"
                     src={`${imgUrl}/${item.poster_path}`}
@@ -36,6 +79,22 @@ const Movie = () => {
             ))}
           </div>
         )}
+        <div className="pagination-container flex justify-center">
+          <button
+            className="mr-2"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span className="">{renderPageButtons()}</span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            className="ml-2"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </>
   );

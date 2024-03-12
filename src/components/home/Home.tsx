@@ -40,7 +40,7 @@ const Home = () => {
     movieId: any;
   }) => (
     <>
-      <div className="min-w-60 mt-2">
+      <div className="min-w-52 mt-2">
         <Link to={`/movie/${movieId}`}>
           <img
             className="card cursor-pointer hover:opacity-80 rounded-xl"

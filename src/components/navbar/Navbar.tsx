@@ -59,14 +59,14 @@ const Navbar = () => {
           >
             Rotten Tomatoes
           </div>
-          <div className="search w-5/12">
+          <div className="search flex items-center w-5/12">
             <input
               type="search"
               name="search"
               className="w-full border rounded-3xl py-1.5 px-7"
               placeholder="search movies,TV shows,..."
             />
-            <CiSearch className="absolute top-7 ml-2 text-lg" />
+            <CiSearch className="absolute ml-2 text-lg" />
           </div>
 
           <div className="category text-white">
