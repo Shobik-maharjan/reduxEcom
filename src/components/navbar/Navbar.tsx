@@ -1,5 +1,5 @@
 import { CiSearch } from "react-icons/ci";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../redux/actions/userActions";
 import { useEffect, useState } from "react";
@@ -17,12 +17,7 @@ const Navbar = () => {
 
   const [showLogout, setShowLogout] = useState<boolean>(false);
 
-  // const handleLogoutClick = () => {
-  //   setShowLogout((prevState) => !prevState);
-  // };
-
   const user = auth.currentUser;
-  // console.log(user);
 
   useEffect(() => {
     if (localStorage.getItem("user") === null) {

@@ -12,15 +12,7 @@ import {
   UPCOMING_MOVIE_LIST,
 } from "../constants/userConstants";
 import { toast } from "react-toastify";
-import {
-  FieldValue,
-  arrayRemove,
-  arrayUnion,
-  deleteField,
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig/config";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -198,7 +190,7 @@ export const getMyList = () => async (dispatch: any) => {
   }
 };
 
-export const deleteMyList = (index: any) => async (dispatch: any) => {
+export const deleteMyList = (index: any) => async () => {
   console.log(index);
 
   try {

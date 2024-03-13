@@ -1,10 +1,6 @@
-// import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { auth, db } from "../firebaseConfig/config";
-// import { addDoc, collection } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
-// import { registerUser } from "../redux/actions/userActions";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { registerUser } from "../redux/actions/userActions";

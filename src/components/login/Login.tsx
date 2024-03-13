@@ -4,14 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../redux/actions/userActions";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebaseConfig/config";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
   const { loading, fail, message, userList } = useSelector(
     (state: any) => state.userList
@@ -23,24 +21,25 @@ const Login = () => {
     }
   }, [fail]);
 
-  // useEffect(() => {
-  //   if (localStorage.getItem("user")) {
-  //     // localStorage.setItem("user", user.userList[0].uid);
-  //     navigate("/");
-  //   } else {
-  //     navigate("/login");
-  //   }
-  //   if (localStorage.getItem("user") !== null) {
-  //     navigate("/");
-  //   }
-  // }, [userList]);
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      // localStorage.setItem("user", user.userList[0].uid);
+      navigate("/");
+    } else {
+      navigate("/login");
+    }
+    if (localStorage.getItem("user") !== null) {
+      navigate("/");
+    }
+  }, [userList]);
 
   const validateCredential = (e: any) => {
     e.preventDefault();
     if (!email || !password) {
+      setError("please fill all inputs");
       return;
     }
-    dispatch<any>(
+    dispatch(
       loginUser({
         email: email,
         password: password,
