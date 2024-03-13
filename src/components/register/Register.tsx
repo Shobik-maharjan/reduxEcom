@@ -73,6 +73,8 @@ const Register = () => {
     if (userList)
       if (localStorage.getItem("user") !== null) {
         navigate("/");
+      } else {
+        navigate("/register");
       }
   }, []);
 

@@ -40,18 +40,21 @@ export const registerUser =
         uid: users.user.uid,
       };
       addDoc(collection(db, "users"), { user });
+
+      dispatch({
+        type: REGISTER_USER,
+        payload: {
+          userName,
+          email,
+          password,
+          uid: users.user.uid,
+        },
+      });
+      toast.success("user registered successfully");
+
       setTimeout(() => {
-        dispatch({
-          type: REGISTER_USER,
-          payload: {
-            userName,
-            email,
-            password,
-            uid: users.user.uid,
-          },
-        });
-        toast.success("user registered successfully");
-      }, 1000);
+        window.location.href = "/login";
+      }, 2000);
     } catch (error) {
       dispatch({
         type: REGISTER_FAIL,
