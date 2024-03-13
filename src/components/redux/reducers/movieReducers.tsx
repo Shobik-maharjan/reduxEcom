@@ -1,7 +1,8 @@
 import {
-  ADD_TO_CART,
+  ADD_TO_MY_LIST,
   DISCOVER_MOVIE_LIST,
   DISCOVER_TV_LIST,
+  GET_MY_LIST,
   NOWPLAYING_MOVIE_LIST,
   POPULAR_MOVIE_LIST,
   RECOMMENDEDATION_LIST,
@@ -10,11 +11,12 @@ import {
   UPCOMING_MOVIE_LIST,
 } from "../constants/userConstants";
 
-// const initialData: {
-//   movielist: [];
-// };
+const initialData = {
+  movielist: [],
+  addToMyLists: [],
+};
 
-const movieReducers = (state: any = [], action: any) => {
+const movieReducers = (state: any = initialData, action: any) => {
   switch (action.type) {
     case NOWPLAYING_MOVIE_LIST:
       //   console.log(action);
@@ -58,10 +60,15 @@ const movieReducers = (state: any = [], action: any) => {
         ...state,
         similarLists: action.payload,
       };
-    case ADD_TO_CART:
+    case ADD_TO_MY_LIST:
       return {
         ...state,
-        addToCart: action.payload,
+        addToMyLists: [...state.addToMyLists, action.payload],
+      };
+    case GET_MY_LIST:
+      return {
+        ...state,
+        myLists: action.payload,
       };
     default:
       return state;

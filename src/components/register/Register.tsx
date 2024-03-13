@@ -13,11 +13,11 @@ const Register = () => {
   const dispatch: any = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState<any>("");
-  const [password, setPassword] = useState<any>("");
+  // const [password, setPassword] = useState<any>("");
   const [data, setData] = useState({
     userName: "",
     email: "",
-    password1: "",
+    password: "",
     confirmPassword: "",
   });
   const handleChange = (e: { target: { name: any; value: any } }) => {
@@ -31,43 +31,7 @@ const Register = () => {
   const { userList, message } = useSelector((state: any) => state.userList);
   // console.log("message", message);
 
-  const { userName, email, password1, confirmPassword } = data;
-  const validateUsername = () => {
-    if (userName === "" || userName === null) {
-      setError("Username is Required");
-    } else {
-      setError("");
-    }
-  };
-
-  const validateEmail = () => {
-    if (email === "" || email === null) {
-      setError("Email is Required");
-    } else {
-      setError("");
-    }
-  };
-  const validatePassword = () => {
-    if (password1 === "" || password1 === null) {
-      setError("Password is Required");
-    } else if (password1.length < 6) {
-      setError("password must be more then 6");
-    } else {
-      setError("");
-    }
-  };
-
-  const checkPasswowrd = () => {
-    if (confirmPassword.length < 6) {
-      setError("password must be more then 6");
-    }
-    if (confirmPassword !== password1) {
-      setError("password and confirm password doesnot match");
-    } else {
-      setPassword(password1);
-      setError("");
-    }
-  };
+  const { userName, email, password, confirmPassword } = data;
 
   useEffect(() => {
     if (userList)
@@ -80,16 +44,27 @@ const Register = () => {
 
   const validateCredential = (e: any) => {
     e.preventDefault();
-    if (!email || !password1 || !userName || !confirmPassword) {
+    if (!email || !password || !userName) {
+      setError("All field are required");
       return;
     }
-    dispatch(
-      registerUser({
-        userName,
-        email,
-        password,
-      })
-    );
+    if (password.length < 6) {
+      setError("password must be more then 6");
+      return;
+    }
+    if (password !== confirmPassword || !confirmPassword) {
+      setError("password and confirm password doesnot match");
+      return;
+    } else {
+      setError("");
+      dispatch(
+        registerUser({
+          userName,
+          email,
+          password,
+        })
+      );
+    }
   };
 
   return (
@@ -112,9 +87,9 @@ const Register = () => {
               type="text"
               name="userName"
               value={userName}
-              onKeyUp={validateUsername}
               className="shadow appearance-none border rounded w-full py-2 px-3 focus:outline-none focus:shadow-outline"
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -128,25 +103,25 @@ const Register = () => {
               type="email"
               name="email"
               value={email}
-              onKeyUp={validateEmail}
               className="shadow appearance-none border rounded w-full py-2 px-3 focus:outline-none focus:shadow-outline"
               onChange={handleChange}
+              required
             />
           </div>
 
           <div className="mb-2">
-            <label htmlFor="password1" className="font-bold">
+            <label htmlFor="password" className="font-bold">
               Password:
             </label>
           </div>
           <div className="mb-4">
             <input
               type="password"
-              name="password1"
-              value={password1}
-              onKeyUp={validatePassword}
+              name="password"
+              value={password}
               className="shadow appearance-none border rounded w-full py-2 px-3 focus:outline-none focus:shadow-outline"
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -160,7 +135,6 @@ const Register = () => {
               type="password"
               name="confirmPassword"
               value={confirmPassword}
-              onKeyUp={checkPasswowrd}
               className="shadow appearance-none border rounded w-full py-2 px-3 focus:outline-none focus:shadow-outline"
               onChange={handleChange}
             />

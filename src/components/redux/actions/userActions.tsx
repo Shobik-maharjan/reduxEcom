@@ -13,7 +13,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig/config";
-import { addDoc, collection } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import {
   LOGIN_FAIL,
   LOGIN_REQUEST,
@@ -39,18 +39,19 @@ export const registerUser =
         password,
         uid: users.user.uid,
       };
-      addDoc(collection(db, "users"), { user });
-
-      dispatch({
-        type: REGISTER_USER,
-        payload: {
-          userName,
-          email,
-          password,
-          uid: users.user.uid,
-        },
-      });
-      toast.success("user registered successfully");
+      setDoc(doc(db, "users", users.user.uid), { user });
+      setTimeout(() => {
+        dispatch({
+          type: REGISTER_USER,
+          payload: {
+            userName,
+            email,
+            password,
+            uid: users.user.uid,
+          },
+        });
+        toast.success("user registered successfully");
+      }, 500);
 
       setTimeout(() => {
         window.location.href = "/login";
@@ -88,7 +89,10 @@ export const loginUser =
             uid: user.user.uid,
           },
         });
-      }, 1000);
+      }, 500);
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 2000);
     } catch (error) {
       dispatch({
         type: LOGIN_FAIL,
@@ -103,4 +107,5 @@ export const logoutUser = () => (dispatch: any) => {
     type: LOGOUT_USER,
   });
   localStorage.clear();
+  window.location.href = "/login";
 };

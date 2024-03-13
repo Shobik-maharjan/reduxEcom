@@ -12,7 +12,8 @@ export const DISCOVER_TV_LIST = "DISCOVER_TV_LIST";
 export const RECOMMENDEDATION_LIST = "RECOMMENDEDATION_LIST";
 export const SIMILAR_LIST = "SIMILAR_LIST";
 
-export const ADD_TO_CART = "ADD_TO_CART";
+export const ADD_TO_MY_LIST = "ADD_TO_MY_LIST";
+export const GET_MY_LIST = "GET_MY_LIST";
 
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_FAIL = "LOGIN_FAIL";

@@ -98,7 +98,7 @@ const Home = () => {
           </button>
         </div>
         <div
-          className="w-full flex gap-2 overflow-x-hidden scrollbar-hide px-4"
+          className="w-full flex gap-2 overflow-x-scroll scrollbar-none px-4"
           ref={containerRef}
           {...events}
         >

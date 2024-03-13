@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../redux/actions/userActions";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebaseConfig/config";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -21,35 +23,17 @@ const Login = () => {
     }
   }, [fail]);
 
-  const validateEmail = () => {
-    if (email === "" || null) {
-      setError("All Field Are Required");
-    } else {
-      setError("");
-    }
-  };
-
-  const validatePassword = () => {
-    if (password === "" || null) {
-      setError("All Field Are Required");
-    } else if (password.length < 6) {
-      setError("password must be more than 6");
-    } else {
-      setError("");
-    }
-  };
-
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      // localStorage.setItem("user", user.userList[0].uid);
-      navigate("/");
-    } else {
-      navigate("/login");
-    }
-    if (localStorage.getItem("user") !== null) {
-      navigate("/");
-    }
-  }, [userList]);
+  // useEffect(() => {
+  //   if (localStorage.getItem("user")) {
+  //     // localStorage.setItem("user", user.userList[0].uid);
+  //     navigate("/");
+  //   } else {
+  //     navigate("/login");
+  //   }
+  //   if (localStorage.getItem("user") !== null) {
+  //     navigate("/");
+  //   }
+  // }, [userList]);
 
   const validateCredential = (e: any) => {
     e.preventDefault();
@@ -83,7 +67,6 @@ const Login = () => {
               type="email"
               name="email"
               required
-              onKeyUp={validateEmail}
               className="shadow appearance-none border rounded w-full py-2 px-3 focus:outline-none focus:shadow-outline"
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -99,7 +82,6 @@ const Login = () => {
               name="password"
               required
               value={password}
-              onKeyUp={validatePassword}
               className="shadow appearance-none border rounded w-full py-2 px-3 focus:outline-none focus:shadow-outline"
               onChange={(e) => setPassword(e.target.value)}
             />

@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addToCart,
+  addToMyList,
   recommendedList,
   similarList,
 } from "../redux/actions/movieActions";
 import { useDraggable } from "react-use-draggable-scroll";
+import { ToastContainer } from "react-toastify";
 
 const SinglePage = () => {
   const movieId = useParams();
@@ -62,6 +63,21 @@ const SinglePage = () => {
     }
   }, [value]);
 
+  const {
+    original_title,
+    runtime,
+    release_date,
+    overview,
+    production_countries,
+    genres,
+    production_companies,
+    tagline,
+    vote_count,
+    poster_path,
+  } = singleMovieData;
+
+  const imageUrl = `${imgUrl}/${poster_path}`;
+
   return (
     <>
       {/* video */}
@@ -72,7 +88,10 @@ const SinglePage = () => {
             controls={true}
             width="100%"
             height="480px"
-            style={{ marginLeft: "10px", marginTop: "10px" }}
+            style={{
+              marginLeft: "10px",
+              marginTop: "10px",
+            }}
           />
         </div>
 
@@ -89,60 +108,52 @@ const SinglePage = () => {
               </div> */}
               <div className="movie_detail pl-4">
                 <div className="movie_title font-bold text-3xl">
-                  <p>{singleMovieData.original_title}</p>
+                  <p>{original_title}</p>
                 </div>
                 <div>
-                  <p>{singleMovieData.runtime} min</p>
+                  <p>{runtime} min</p>
                 </div>
                 <div className="movie_description text-sm py-2">
-                  <p>{singleMovieData.overview}</p>
+                  <p>{overview}</p>
                 </div>
                 <div className="country flex">
                   <h2 className="font-bold pr-2">Country:</h2>
                   <p>
-                    {singleMovieData.production_countries.map(
-                      (item: any) => item.name + ", "
-                    )}
+                    {production_countries.map((item: any) => item.name + ", ")}
                   </p>
                 </div>
                 <div className="genres flex">
                   <h2 className="font-bold pr-2">Genres:</h2>
-                  <p>
-                    {singleMovieData.genres.map(
-                      (item: any) => item.name + ",  "
-                    )}
-                  </p>
+                  <p>{genres.map((item: any) => item.name + ",  ")}</p>
                 </div>
                 <div className="genres flex">
                   <h2 className="font-bold pr-2">Release Date:</h2>
-                  <p>{singleMovieData.release_date}</p>
+                  <p>{release_date}</p>
                 </div>
                 <div className="genres flex">
                   <h2 className="font-bold pr-2">Duration:</h2>
-                  <p>{singleMovieData.runtime} min</p>
+                  <p>{runtime} min</p>
                 </div>
                 <div className="production flex">
                   <h2 className="font-bold pr-2">Production:</h2>
                   <p>
-                    {singleMovieData.production_companies.map(
-                      (item: any) => item.name + ", "
-                    )}
+                    {production_companies.map((item: any) => item.name + ", ")}
                   </p>
                 </div>
                 <div className="tags flex">
                   <h2 className="font-bold pr-2">Tags:</h2>
-                  <p>{singleMovieData.tagline}</p>
+                  <p>{tagline}</p>
                 </div>
                 <div className="vote flex">
                   <h2 className="font-bold pr-2">Vote:</h2>
-                  <p>{singleMovieData.vote_count}</p>
+                  <p>{vote_count}</p>
                 </div>
 
                 <div className="my-list">
                   <button
-                    className="bg-gray-200 px-4 py-2 rounded-md hover:opacity-95 mt-2"
+                    className="bg-gray-400/80 px-4 py-2 rounded-md hover:bg-gray-400/100 mt-2"
                     onClick={() =>
-                      dispatch(addToCart(singleMovieData.original_title))
+                      dispatch(addToMyList(original_title, imageUrl))
                     }
                   >
                     Add to List
@@ -153,6 +164,8 @@ const SinglePage = () => {
           )}
         </div>
       </div>
+      <ToastContainer />
+
       {/* recommendation list */}
       <div
         className="recommendation-list mt-6"
@@ -164,7 +177,7 @@ const SinglePage = () => {
             <h2 className="pl-4 font-bold text-2xl">Recommended</h2>
             {recommendedLists && (
               <div
-                className="px-4 w-full flex gap-2 overflow-x-hidden scrollbar-hide"
+                className="px-4 w-full flex gap-2 overflow-x-scroll scrollbar-none"
                 ref={recommendedListRef}
                 {...recommendedListEvents}
               >
@@ -195,7 +208,7 @@ const SinglePage = () => {
             <h2 className="pl-4 font-bold text-2xl">Similar</h2>
             {similarLists && (
               <div
-                className="w-full flex gap-2 overflow-x-hidden scrollbar-hide px-4"
+                className="w-full flex gap-2 overflow-x-scroll scrollbar-none px-4"
                 ref={similarListRef}
                 {...similarListEvents}
               >

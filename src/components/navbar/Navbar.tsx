@@ -7,6 +7,9 @@ import { RxAvatar } from "react-icons/rx";
 import { FaRegUser } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
 import { FaUserTie } from "react-icons/fa";
+import { BiMoviePlay } from "react-icons/bi";
+import { FaDisplay } from "react-icons/fa6";
+import { auth } from "../firebaseConfig/config";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -18,9 +21,8 @@ const Navbar = () => {
   //   setShowLogout((prevState) => !prevState);
   // };
 
-  const user = useSelector((state: any) => state.userList);
-  // const username = user.userList[0]?.username;
-  const username = localStorage.getItem("userName");
+  const user = auth.currentUser;
+  // console.log(user);
 
   useEffect(() => {
     if (localStorage.getItem("user") === null) {
@@ -34,19 +36,15 @@ const Navbar = () => {
   };
   window.onscroll = handleScroll;
 
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
-
   const navbarStyle = {
     backgroundColor: scrolling ? "hsl(0,0%,0%,0.8)" : "black ",
   };
   const handleLogoClick = () => {
     navigate("/");
+    window.scrollTo(0, 0);
+  };
+
+  const handleLinkClick = () => {
     window.scrollTo(0, 0);
   };
   return (
@@ -72,13 +70,28 @@ const Navbar = () => {
           <div className="category text-white">
             <ul className="flex items-center">
               <li className="px-2.5">
-                <Link to={"/movies"}>Movies</Link>
+                <Link
+                  to={"/movies"}
+                  className="flex items-center"
+                  onClick={handleLinkClick}
+                >
+                  <BiMoviePlay className="mr-2" /> Movies
+                </Link>
               </li>
               <li className="px-2.5">
-                <Link to={"/tv-shows"}>Tv&nbsp;Shows</Link>
+                <Link
+                  to={"/tv-shows"}
+                  className="flex items-center"
+                  onClick={handleLinkClick}
+                >
+                  <FaDisplay className="mr-2" />
+                  Tv&nbsp;Shows
+                </Link>
               </li>
               <li className="px-2.5">
-                <Link to={"/my-list"}>My&nbsp;List</Link>
+                <Link to={"/my-list"} onClick={handleLinkClick}>
+                  My&nbsp;List
+                </Link>
               </li>
               <li className="px-2.5 relative">
                 <RxAvatar
@@ -96,7 +109,7 @@ const Navbar = () => {
                     <div>
                       <div className="flex mb-2 items-center hover:underline">
                         <FaUserTie className="mr-2" />
-                        {username}
+                        {user?.displayName}
                       </div>
                       <div className="account flex items-center mb-2 cursor-pointer hover:underline">
                         <FaRegUser className="mr-2" />
