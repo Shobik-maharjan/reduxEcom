@@ -12,7 +12,13 @@ import {
   UPCOMING_MOVIE_LIST,
 } from "../constants/userConstants";
 import { toast } from "react-toastify";
-import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { auth, db } from "../../firebaseConfig/config";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -147,26 +153,38 @@ export const similarList = (movieId: any) => async (dispatch: any) => {
 };
 
 export const addToMyList =
-  (title: any, imageUrl: any) => async (dispatch: any) => {
+  ({ title, imageUrl }: { title: any; imageUrl: any }) =>
+  async (dispatch: any) => {
     try {
       onAuthStateChanged(auth, async (user) => {
         if (user) {
           console.log(user.uid);
           const userId = user.uid;
-          await updateDoc(doc(db, "users", userId), {
-            myList: arrayUnion({ title, imageUrl, userId }),
-          });
-          dispatch({
-            type: ADD_TO_MY_LIST,
-            payload: {
-              title,
-              imageUrl,
-              userId,
-            },
-          });
+          const docRef = doc(db, "users", userId);
+          const docSnap = await getDoc(docRef);
+          const myList = docSnap?.data()?.myList;
+
+          const isDuplicateData = myList.some(
+            (item: any) => item.title === title && item.imageUrl === imageUrl
+          );
+          if (!isDuplicateData) {
+            await updateDoc(docRef, {
+              myList: arrayUnion({ title, imageUrl, userId }),
+            });
+            dispatch({
+              type: ADD_TO_MY_LIST,
+              payload: {
+                title,
+                imageUrl,
+                userId,
+              },
+            });
+            toast.success("item added to list");
+          } else {
+            toast.error("alaready added to my list");
+          }
         }
       });
-      toast.success("item added to list");
     } catch (error) {
       console.log(error);
     }
@@ -191,16 +209,27 @@ export const getMyList = () => async (dispatch: any) => {
 };
 
 export const deleteMyList = (index: any) => async () => {
-  console.log(index);
-
   try {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const userId = user.uid;
-        await updateDoc(doc(db, "users", userId), {});
+        await updateDoc(doc(db, "users", userId), {
+          myList: arrayRemove(index),
+        });
+        toast.success("removed from my list");
       }
     });
   } catch (error) {
     console.log(error);
   }
 };
+
+// const userRef = doc(db, "users", userId);
+//         const userDoc = await getDoc(doc(db, "users", userId));
+//         if (userDoc.exists()) {
+//           const myList = userDoc.data().myList;
+//           if (myList && myList.length > index) {
+//             myList.splice(index, 1); // Remove the item at the specified index
+//             await updateDoc(userRef, { myList });
+//           }
+//         }

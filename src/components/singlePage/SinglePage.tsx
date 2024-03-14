@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +20,11 @@ const SinglePage = () => {
   const dispatch: any = useDispatch();
 
   const { "*": value }: any = movieId;
+  console.log(movieId);
+
+  const values = value.split("/");
+  const parts = values[0];
+  console.log(parts);
 
   const { recommendedLists, similarLists } = useSelector(
     (state: any) => state.movieList
@@ -30,6 +35,8 @@ const SinglePage = () => {
     const singleMovieData = await axios.get(
       `${url}/${value}?api_key=${apiKey}`
     );
+    console.log(singleMovieData.data);
+
     setSingleMovieData(singleMovieData.data);
   };
 
@@ -46,7 +53,7 @@ const SinglePage = () => {
   useEffect(() => {
     fetchVideo();
     fetchData();
-  }, []);
+  }, [value]);
 
   const recommendedListRef: any = useRef(null);
   const similarListRef: any = useRef(null);
@@ -74,6 +81,7 @@ const SinglePage = () => {
     tagline,
     vote_count,
     poster_path,
+    original_name,
   } = singleMovieData;
 
   const imageUrl = `${imgUrl}/${poster_path}`;
@@ -108,10 +116,10 @@ const SinglePage = () => {
               </div> */}
               <div className="movie_detail pl-4">
                 <div className="movie_title font-bold text-3xl">
-                  <p>{original_title}</p>
+                  <p>{original_title ? original_title : original_name}</p>
                 </div>
                 <div>
-                  <p>{runtime} min</p>
+                  <p>{runtime ? runtime + " min" : ""}</p>
                 </div>
                 <div className="movie_description text-sm py-2">
                   <p>{overview}</p>
@@ -153,7 +161,14 @@ const SinglePage = () => {
                   <button
                     className="bg-gray-400/80 px-4 py-2 rounded-md hover:bg-gray-400/100 mt-2"
                     onClick={() =>
-                      dispatch(addToMyList(original_title, imageUrl))
+                      dispatch(
+                        addToMyList({
+                          title: original_title
+                            ? original_title
+                            : original_name,
+                          imageUrl: imageUrl,
+                        })
+                      )
                     }
                   >
                     Add to List
@@ -182,14 +197,20 @@ const SinglePage = () => {
                 {...recommendedListEvents}
               >
                 {recommendedLists.map((item: any) => (
-                  <div className="min-w-52" key={item.id}>
-                    <img
-                      className="flex rounded-md cursor-pointer hover:opacity-80"
-                      src={`${imgUrl}/${item.poster_path}`}
-                      alt=""
-                    />
-                    <p>{item.original_title}</p>
-                  </div>
+                  <Link to={`/${parts}/${item.id}`}>
+                    <div className="min-w-52" key={item.id}>
+                      <img
+                        className="flex rounded-md cursor-pointer hover:opacity-80"
+                        src={`${imgUrl}/${item.poster_path}`}
+                        alt=""
+                      />
+                      <p>
+                        {item.original_title
+                          ? item.original_title
+                          : item.original_name}
+                      </p>
+                    </div>
+                  </Link>
                 ))}
               </div>
             )}
@@ -213,14 +234,20 @@ const SinglePage = () => {
                 {...similarListEvents}
               >
                 {similarLists.map((item: any) => (
-                  <div className="min-w-52" key={item.id}>
-                    <img
-                      className="flex rounded-xl cursor-pointer hover:opacity-80"
-                      src={`${imgUrl}/${item.poster_path}`}
-                      alt=""
-                    />
-                    <p>{item.original_title}</p>
-                  </div>
+                  <Link to={`/${parts}/${item.id}`}>
+                    <div className="min-w-52" key={item.id}>
+                      <img
+                        className="flex rounded-xl cursor-pointer hover:opacity-80"
+                        src={`${imgUrl}/${item.poster_path}`}
+                        alt=""
+                      />
+                      <p>
+                        {item.original_title
+                          ? item.original_title
+                          : item.original_name}
+                      </p>
+                    </div>
+                  </Link>
                 ))}
               </div>
             )}
