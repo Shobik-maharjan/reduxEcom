@@ -20,6 +20,7 @@ const Home = () => {
     trendingMovieLists,
     upcomingMovieLists,
     popularMovieLists,
+    loading,
   } = useSelector((state: any) => state.movieList);
   useEffect(() => {
     dispatch(nowPlayingMovieList());
@@ -117,46 +118,51 @@ const Home = () => {
 
   return (
     <>
-      <div
-        className="banner bg-cover mb-5 "
-        style={{
-          height: "80vh",
-          objectFit: "cover",
-          backgroundImage: popularMovieLists
-            ? `url(${`${imgUrl}/${popularMovieLists[0].poster_path}`})`
-            : "rgb(16,16,16);}",
-        }}
-      >
-        <div className="movie-name pl-4 py-[20%] backdrop-blur-sm">
-          {popularMovieLists && (
-            <>
-              <h1 className="text-white text-6xl pb-4 ">
-                {popularMovieLists[0].original_title}
-              </h1>
+      {loading ? (
+        <div className={loading ? "display-loading + mt-[20%]" : ""}></div>
+      ) : (
+        <div>
+          <div
+            className="banner bg-cover mb-5 "
+            style={{
+              height: "80vh",
+              objectFit: "cover",
+              backgroundImage: popularMovieLists
+                ? `url(${`${imgUrl}/${popularMovieLists[0].backdrop_path}`})`
+                : "rgb(16,16,16);}",
+            }}
+          >
+            <div className="movie-name pl-4 py-[20%] backdrop-blur-sm">
+              {popularMovieLists && (
+                <>
+                  <h1 className="text-white text-4xl md:text-6xl pb-4 ">
+                    {popularMovieLists[0].original_title}
+                  </h1>
 
-              <p className="w-1/2 text-white">
-                {popularMovieLists[0].overview}
-              </p>
+                  <p className="md:w-1/2 text-justify pr-4	 text-white">
+                    {popularMovieLists[0].overview}
+                  </p>
 
-              <button
-                type="button"
-                className="bg-cyan-600 font-bold hover:opacity-95 rounded-xl px-4 py-2 mt-4"
-              >
-                <Link to={`/movie/${popularMovieLists[0]?.id}`}>Watch Now</Link>
-              </button>
-            </>
-          )}
+                  <button
+                    type="button"
+                    className="bg-cyan-600 font-bold hover:opacity-95 rounded-xl px-4 py-2 mt-4"
+                  >
+                    <Link to={`/movie/${popularMovieLists[0]?.id}`}>
+                      Watch Now
+                    </Link>
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+          <div className="Movies List">
+            <Row title={"Now Playing Movies"} arr={nowPlayingMovieLists} />
+            <Row title={"Trending Movies"} arr={trendingMovieLists} />
+            <Row title={"Upcoming Movies"} arr={upcomingMovieLists} />
+            <Row title={"Popular Movies"} arr={popularMovieLists} />
+          </div>
         </div>
-      </div>
-
-      <div className="Movies List">
-        <Row title={"Now Playing Movies"} arr={nowPlayingMovieLists} />
-        <Row title={"Trending Movies"} arr={trendingMovieLists} />
-        <Row title={"Upcoming Movies"} arr={upcomingMovieLists} />
-        <Row title={"Popular Movies"} arr={popularMovieLists} />
-      </div>
-
-      <section className="Home"></section>
+      )}
     </>
   );
 };

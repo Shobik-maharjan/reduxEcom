@@ -4,6 +4,8 @@ import {
   DISCOVER_MOVIE_LIST,
   DISCOVER_TV_LIST,
   GET_MY_LIST,
+  MOVIE_REQUEST,
+  MOVIE_REQUEST_SUCCESS,
   NOWPLAYING_MOVIE_LIST,
   POPULAR_MOVIE_LIST,
   RECOMMENDEDATION_LIST,
@@ -30,6 +32,9 @@ const popular = "popular";
 
 export const nowPlayingMovieList = () => async (dispatch: any) => {
   try {
+    dispatch({
+      type: MOVIE_REQUEST,
+    });
     const {
       data: { results },
     } = await axios.get(`${url}/movie/${nowPlaying}?api_key=${apiKey}&page=1`);
@@ -44,6 +49,9 @@ export const nowPlayingMovieList = () => async (dispatch: any) => {
 
 export const trendingMovieList = () => async (dispatch: any) => {
   try {
+    dispatch({
+      type: MOVIE_REQUEST,
+    });
     const {
       data: { results },
     } = await axios.get(`${url}/trending/movie/day?api_key=${apiKey}&page=1`);
@@ -58,6 +66,9 @@ export const trendingMovieList = () => async (dispatch: any) => {
 
 export const upComingMovieList = () => async (dispatch: any) => {
   try {
+    dispatch({
+      type: MOVIE_REQUEST,
+    });
     const {
       data: { results },
     } = await axios.get(`${url}/movie/${upcoming}?api_key=${apiKey}`);
@@ -72,12 +83,18 @@ export const upComingMovieList = () => async (dispatch: any) => {
 
 export const popularMovieList = () => async (dispatch: any) => {
   try {
+    dispatch({
+      type: MOVIE_REQUEST,
+    });
     const {
       data: { results },
     } = await axios.get(`${url}/movie/${popular}?api_key=${apiKey}`);
     dispatch({
       type: POPULAR_MOVIE_LIST,
       payload: results,
+    });
+    dispatch({
+      type: MOVIE_REQUEST_SUCCESS,
     });
   } catch (e) {
     console.log(e);
@@ -87,45 +104,66 @@ export const popularMovieList = () => async (dispatch: any) => {
 export const discoverMovieList =
   (page = 1) =>
   async (dispatch: any) => {
+    dispatch({
+      type: MOVIE_REQUEST,
+    });
     try {
-      const {
-        data: { results },
-      } = await axios.get(
+      const data = await axios.get(
         `${url}/discover/movie?api_key=${apiKey}&page=${page}`
       );
-      const arr: any = await axios.get(
-        `${url}/discover/movie?api_key=${apiKey}&page=${page}}`
-      );
-
+      const results = data.data.results;
+      const totalMoviePage = data.data.total_pages;
       dispatch({
         type: DISCOVER_MOVIE_LIST,
         payload: results,
-        totalPage: arr.data.total_pages,
+        totalMoviePage,
       });
+      setTimeout(() => {
+        dispatch({
+          type: MOVIE_REQUEST_SUCCESS,
+        });
+      }, 1000);
     } catch (e) {
       console.log(e);
     }
   };
 
-export const discoverTvList = () => async (dispatch: any) => {
-  try {
-    const {
-      data: { results },
-    } = await axios.get(`${url}/discover/tv?api_key=${apiKey}`);
-    const filterResults = results.filter(
-      (item: any) => item.poster_path !== null
-    );
-    dispatch({
-      type: DISCOVER_TV_LIST,
-      payload: filterResults,
-    });
-  } catch (e) {
-    console.log(e);
-  }
-};
+export const discoverTvList =
+  (page = 1) =>
+  async (dispatch: any) => {
+    try {
+      dispatch({
+        type: MOVIE_REQUEST,
+      });
+      const data = await axios.get(
+        `${url}/discover/tv?api_key=${apiKey}&page=${page}`
+      );
+      const results = data.data.results;
+      const totalTvPage = data.data.total_pages;
+      // console.log(totalTvPages);
+      const filterResults = results.filter(
+        (item: any) => item.poster_path !== null
+      );
+      dispatch({
+        type: DISCOVER_TV_LIST,
+        payload: filterResults,
+        totalTvPage,
+      });
+      setTimeout(() => {
+        dispatch({
+          type: MOVIE_REQUEST_SUCCESS,
+        });
+      }, 1000);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
 export const recommendedList = (movieId: any) => async (dispatch: any) => {
   try {
+    dispatch({
+      type: MOVIE_REQUEST,
+    });
     const {
       data: { results },
     } = await axios.get(`${url}/${movieId}/recommendations?api_key=${apiKey}`);
@@ -140,6 +178,9 @@ export const recommendedList = (movieId: any) => async (dispatch: any) => {
 
 export const similarList = (movieId: any) => async (dispatch: any) => {
   try {
+    dispatch({
+      type: MOVIE_REQUEST,
+    });
     const {
       data: { results },
     } = await axios.get(`${url}/${movieId}/similar?api_key=${apiKey}`);
@@ -147,36 +188,55 @@ export const similarList = (movieId: any) => async (dispatch: any) => {
       type: SIMILAR_LIST,
       payload: results,
     });
+    setTimeout(() => {
+      dispatch({
+        type: MOVIE_REQUEST_SUCCESS,
+      });
+    }, 1000);
   } catch (error: any) {
     console.log(error);
   }
 };
 
 export const addToMyList =
-  ({ title, imageUrl }: { title: any; imageUrl: any }) =>
+  ({
+    title,
+    imageUrl,
+    itemId,
+    category,
+  }: {
+    title: any;
+    imageUrl: any;
+    itemId: any;
+    category: any;
+  }) =>
   async (dispatch: any) => {
     try {
       onAuthStateChanged(auth, async (user) => {
         if (user) {
-          console.log(user.uid);
           const userId = user.uid;
           const docRef = doc(db, "users", userId);
           const docSnap = await getDoc(docRef);
           const myList = docSnap?.data()?.myList;
 
           const isDuplicateData = myList.some(
-            (item: any) => item.title === title && item.imageUrl === imageUrl
+            (item: any) =>
+              item.title === title &&
+              item.imageUrl === imageUrl &&
+              item.itemId === itemId
           );
           if (!isDuplicateData) {
             await updateDoc(docRef, {
-              myList: arrayUnion({ title, imageUrl, userId }),
+              myList: arrayUnion({ title, imageUrl, userId, itemId, category }),
             });
             dispatch({
               type: ADD_TO_MY_LIST,
               payload: {
                 title,
                 imageUrl,
+                itemId,
                 userId,
+                category,
               },
             });
             toast.success("item added to list");
@@ -192,6 +252,9 @@ export const addToMyList =
 
 export const getMyList = () => async (dispatch: any) => {
   try {
+    dispatch({
+      type: MOVIE_REQUEST,
+    });
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const userId = user.uid;
@@ -201,6 +264,9 @@ export const getMyList = () => async (dispatch: any) => {
           type: GET_MY_LIST,
           payload: data,
         });
+        dispatch({
+          type: MOVIE_REQUEST_SUCCESS,
+        });
       }
     });
   } catch (error) {
@@ -208,7 +274,7 @@ export const getMyList = () => async (dispatch: any) => {
   }
 };
 
-export const deleteMyList = (index: any) => async () => {
+export const deleteMyList = (index: any) => async (dispatch: any) => {
   try {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -217,6 +283,7 @@ export const deleteMyList = (index: any) => async () => {
           myList: arrayRemove(index),
         });
         toast.success("removed from my list");
+        dispatch(getMyList());
       }
     });
   } catch (error) {
@@ -224,12 +291,13 @@ export const deleteMyList = (index: any) => async () => {
   }
 };
 
-// const userRef = doc(db, "users", userId);
-//         const userDoc = await getDoc(doc(db, "users", userId));
-//         if (userDoc.exists()) {
-//           const myList = userDoc.data().myList;
-//           if (myList && myList.length > index) {
-//             myList.splice(index, 1); // Remove the item at the specified index
-//             await updateDoc(userRef, { myList });
-//           }
-//         }
+export const searchMovieList =
+  ({ query = "" }: { query: any }) =>
+  async () => {
+    try {
+      await axios.get(`${url}/search/movie?api_key=${apiKey}&query=${query}`);
+      console.log(query);
+    } catch (error) {
+      console.log(error);
+    }
+  };

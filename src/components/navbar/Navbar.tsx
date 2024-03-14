@@ -32,7 +32,7 @@ const Navbar = () => {
   window.onscroll = handleScroll;
 
   const navbarStyle = {
-    backgroundColor: scrolling ? "hsl(0,0%,0%,0.8)" : "black ",
+    backgroundColor: scrolling ? "hsl(0,0%,0%,0.9)" : "black ",
   };
   const handleLogoClick = () => {
     navigate("/");
@@ -45,14 +45,14 @@ const Navbar = () => {
   return (
     <>
       <div className="sticky top-0 w-full z-40 " style={navbarStyle}>
-        <div className="flex justify-between  items-center p-4">
+        <div className="flex flex-col md:flex-row justify-between  items-center p-4">
           <div
-            className="logo text-white cursor-pointer text-2xl"
+            className="logo text-white md:w-4/12 cursor-pointer text-2xl mr-4"
             onClick={handleLogoClick}
           >
-            Rotten Tomatoes
+            Rotten&nbsp;Tomatoes
           </div>
-          <div className="search flex items-center w-5/12">
+          <div className="search flex items-center my-2 w-full md:w-11/12">
             <input
               type="search"
               name="search"
@@ -62,9 +62,9 @@ const Navbar = () => {
             <CiSearch className="absolute ml-2 text-lg" />
           </div>
 
-          <div className="category text-white">
-            <ul className="flex items-center">
-              <li className="px-2.5">
+          <div className="category text-white w-full md:w-6/12">
+            <ul className="flex items-center justify-between">
+              <li className="p-0 md:px-2.5">
                 <Link
                   to={"/movies"}
                   className="flex items-center"

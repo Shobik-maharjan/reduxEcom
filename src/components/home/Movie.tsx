@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { discoverMovieList } from "../redux/actions/movieActions";
 import { Link } from "react-router-dom";
+import SearchAndFilter from "../searchAndFilter/SearchAndFilter";
 
 const Movie = () => {
   const imgUrl = import.meta.env.VITE_IMAGE_URL;
   const dispatch: any = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
+  const [filteredMovieList, setFilteredMovieList] = useState([]);
+  const [search, setSearch] = useState("");
 
-  const { discoverMovieLists, totalPage } = useSelector(
+  const { discoverMovieLists, totalMoviePage, loading } = useSelector(
     (state: any) => state.movieList
   );
 
@@ -21,7 +24,7 @@ const Movie = () => {
   };
 
   const getTotalPages = () => {
-    return totalPage > 0 ? totalPage : 1;
+    return totalMoviePage > 0 ? totalMoviePage : 1;
   };
 
   const renderPageButtons = () => {
@@ -53,47 +56,62 @@ const Movie = () => {
         </button>
       );
     }
-
     return buttons;
   };
 
+  const handleSearchInput = (e: any) => {
+    setSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    const filteredList = discoverMovieLists?.filter((movie: any) =>
+      movie.original_title.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredMovieList(filteredList);
+  }, [search, discoverMovieLists]);
+
   return (
     <>
-      <div className="p-4">
-        {/* <h2 className="text-2xl font-bold mb-6">MOVIES</h2> */}
-        {discoverMovieLists && (
-          <div className="flex gap-2.5 flex-wrap justify-between">
-            {discoverMovieLists.map((item: any, i: any) => (
-              <Link to={`/movie/${discoverMovieLists[i].id}`} key={item.id}>
-                <div className="mb-4 w-56">
-                  <img
-                    className="flex rounded-md cursor-pointer hover:opacity-80"
-                    src={`${imgUrl}/${item.poster_path}`}
-                    alt=""
-                  />
-                  <p>{item.title}</p>
-                </div>
-              </Link>
-            ))}
+      <SearchAndFilter onChange={handleSearchInput} value={search} />
+      {loading ? (
+        <div className={loading ? "display-loading" : ""}></div>
+      ) : (
+        <div className="p-4">
+          {/* <h2 className="text-2xl font-bold mb-6">MOVIES</h2> */}
+          {filteredMovieList && (
+            <div className="flex gap-2.5 flex-wrap justify-between">
+              {filteredMovieList.map((item: any, i: any) => (
+                <Link to={`/movie/${discoverMovieLists[i].id}`} key={item.id}>
+                  <div className="mb-4 w-28 md:w-56">
+                    <img
+                      className="flex rounded-md cursor-pointer hover:opacity-80"
+                      src={`${imgUrl}/${item.poster_path}`}
+                      alt=""
+                    />
+                    <p>{item.title}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+          <div className="pagination-container flex justify-center">
+            <button
+              className="mr-2"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span className="">{renderPageButtons()}</span>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              className="ml-2"
+            >
+              Next
+            </button>
           </div>
-        )}
-        <div className="pagination-container flex justify-center">
-          <button
-            className="mr-2"
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-          <span className="">{renderPageButtons()}</span>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            className="ml-2"
-          >
-            Next
-          </button>
         </div>
-      </div>
+      )}
     </>
   );
 };

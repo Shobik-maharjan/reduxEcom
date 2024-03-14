@@ -1,3 +1,23 @@
 .scrollbar-none {
   scrollbar-width: none;
 }
+
+.display-loading {
+  width: 3rem;
+  height: 3rem;
+  background-color: rgb(255, 255, 255);
+  border: 8px solid hsl(0, 0%, 89%);
+  border-top: 8px solid hsl(0, 0%, 11%);
+  border-radius: 100%;
+  animation: spin 1s linear infinite;
+  margin: 10% auto;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -2,7 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const SearchAndFilter = () => {
+const SearchAndFilter = ({
+  onChange,
+  value,
+}: {
+  onChange: any;
+  value: any;
+}) => {
   const url = import.meta.env.VITE_URL;
   const apiKey = import.meta.env.VITE_API_KEY;
 
@@ -29,13 +35,14 @@ const SearchAndFilter = () => {
     <>
       <div className="px-4 pt-6">
         <h2 className="text-2xl font-bold mb-6 uppercase">{title}</h2>
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
           <div className="mb-4 mr-2">
             <input
               type="search"
-              name=""
+              name="search"
               placeholder="search"
-              id=""
+              value={value}
+              onChange={onChange}
               className="border-2 border-black rounded-md px-4 py-2"
             />
           </div>

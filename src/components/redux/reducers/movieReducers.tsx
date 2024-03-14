@@ -3,6 +3,8 @@ import {
   DISCOVER_MOVIE_LIST,
   DISCOVER_TV_LIST,
   GET_MY_LIST,
+  MOVIE_REQUEST,
+  MOVIE_REQUEST_SUCCESS,
   NOWPLAYING_MOVIE_LIST,
   POPULAR_MOVIE_LIST,
   RECOMMENDEDATION_LIST,
@@ -18,6 +20,16 @@ const initialData = {
 
 const movieReducers = (state: any = initialData, action: any) => {
   switch (action.type) {
+    case MOVIE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case MOVIE_REQUEST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
     case NOWPLAYING_MOVIE_LIST:
       //   console.log(action);
       return {
@@ -43,12 +55,13 @@ const movieReducers = (state: any = initialData, action: any) => {
       return {
         ...state,
         discoverMovieLists: action.payload,
-        totalPage: action.totalPage,
+        totalMoviePage: action.totalMoviePage,
       };
     case DISCOVER_TV_LIST:
       return {
         ...state,
         discoverTvLists: action.payload,
+        totalTvPage: action.totalTvPage,
       };
     case RECOMMENDEDATION_LIST:
       return {

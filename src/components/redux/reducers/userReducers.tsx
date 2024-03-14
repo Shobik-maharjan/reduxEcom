@@ -1,5 +1,4 @@
 import {
-  LOADING,
   LOGIN_FAIL,
   LOGIN_REQUEST,
   LOGIN_USER_SUCCESS,
@@ -10,7 +9,6 @@ import {
 
 const initialData = {
   userList: [],
-  loading: [],
 };
 // type userType = {
 //   userName: string;
@@ -49,10 +47,6 @@ const userReducers = (state: any = initialData, action: any) => {
       return {
         ...state,
         userList: [],
-      };
-    case LOADING:
-      return {
-        userList: [action.payload],
       };
     case LOGIN_FAIL:
       return {

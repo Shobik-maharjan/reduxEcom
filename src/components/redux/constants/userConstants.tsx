@@ -18,4 +18,5 @@ export const GET_MY_LIST = "GET_MY_LIST";
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const REGISTER_FAIL = "REGISTER_FAIL";
-export const LOADING = "LOADING";
+export const MOVIE_REQUEST = "MOVIE_REQUEST";
+export const MOVIE_REQUEST_SUCCESS = "MOVIE_REQUEST_SUCCESS";
