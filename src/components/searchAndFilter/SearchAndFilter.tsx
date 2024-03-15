@@ -2,13 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const SearchAndFilter = ({
-  onChange,
-  value,
-}: {
-  onChange: any;
-  value: any;
-}) => {
+const SearchAndFilter = ({ onSearch }: { onSearch: any }) => {
   const url = import.meta.env.VITE_URL;
   const apiKey = import.meta.env.VITE_API_KEY;
 
@@ -18,6 +12,7 @@ const SearchAndFilter = ({
 
   const [movieGenre, setMovieGenre] = useState<any>();
   const [genre, setGenre] = useState<any>();
+  const [query, setQuery] = useState("");
 
   const fetchData = async () => {
     const movieGenre = await axios.get(`${url}/genre/list?api_key=${apiKey}`);
@@ -27,6 +22,13 @@ const SearchAndFilter = ({
     );
     setGenre(tvListGenre.data.genres.map((item: any) => item.name));
   };
+  const handleSearch = (e: any) => {
+    const searchQuery = e.target.value;
+
+    setQuery(searchQuery);
+
+    onSearch(searchQuery); // Dispatch search action with query
+  };
 
   useEffect(() => {
     fetchData();
@@ -34,15 +36,19 @@ const SearchAndFilter = ({
   return (
     <>
       <div className="px-4 pt-6">
-        <h2 className="text-2xl font-bold mb-6 uppercase">{title}</h2>
+        <h2 className="text-2xl font-bold mb-6 uppercase">
+          {title === "tv" ? "Tv-shows" : title}
+        </h2>
         <div className="flex flex-col md:flex-row">
           <div className="mb-4 mr-2">
             <input
               type="search"
               name="search"
               placeholder="search"
-              value={value}
-              onChange={onChange}
+              value={query}
+              onChange={(e) => {
+                handleSearch(e);
+              }}
               className="border-2 border-black rounded-md px-4 py-2"
             />
           </div>

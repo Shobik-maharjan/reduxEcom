@@ -8,6 +8,7 @@ import {
   NOWPLAYING_MOVIE_LIST,
   POPULAR_MOVIE_LIST,
   RECOMMENDEDATION_LIST,
+  SEARCH_MOVIE,
   SIMILAR_LIST,
   TRENDING_MOVIE_LIST,
   UPCOMING_MOVIE_LIST,
@@ -82,6 +83,11 @@ const movieReducers = (state: any = initialData, action: any) => {
       return {
         ...state,
         myLists: action.payload,
+      };
+    case SEARCH_MOVIE:
+      return {
+        ...state,
+        searchResults: action.payload,
       };
     default:
       return state;

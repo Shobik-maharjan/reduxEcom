@@ -10,10 +10,14 @@ import { FaUserTie } from "react-icons/fa";
 import { BiMoviePlay } from "react-icons/bi";
 import { FaDisplay } from "react-icons/fa6";
 import { auth } from "../firebaseConfig/config";
+import {
+  discoverMovieList,
+  discoverTvList,
+} from "../redux/actions/movieActions";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   const [showLogout, setShowLogout] = useState<boolean>(false);
 
@@ -41,6 +45,16 @@ const Navbar = () => {
 
   const handleLinkClick = () => {
     window.scrollTo(0, 0);
+    dispatch(discoverMovieList(1));
+  };
+
+  const handleMovieClick = () => {
+    dispatch(discoverMovieList(1));
+    handleLinkClick();
+  };
+  const handleTvLinkClick = () => {
+    dispatch(discoverTvList(1));
+    handleLinkClick();
   };
   return (
     <>
@@ -68,16 +82,16 @@ const Navbar = () => {
                 <Link
                   to={"/movies"}
                   className="flex items-center"
-                  onClick={handleLinkClick}
+                  onClick={handleMovieClick}
                 >
                   <BiMoviePlay className="mr-2" /> Movies
                 </Link>
               </li>
               <li className="px-2.5">
                 <Link
-                  to={"/tv-shows"}
+                  to={"/tv"}
                   className="flex items-center"
-                  onClick={handleLinkClick}
+                  onClick={handleTvLinkClick}
                 >
                   <FaDisplay className="mr-2" />
                   Tv&nbsp;Shows
@@ -112,7 +126,7 @@ const Navbar = () => {
                       </div>
                       <div
                         className="flex items-center cursor-pointer hover:underline"
-                        onClick={() => dispatch<any>(logoutUser())}
+                        onClick={() => dispatch(logoutUser())}
                       >
                         <IoLogOutOutline className="mr-2" />
                         Logout

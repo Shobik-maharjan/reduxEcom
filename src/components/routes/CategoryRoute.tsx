@@ -10,7 +10,7 @@ const CategoryRoute = () => {
       {/* <SearchAndFilter /> */}
       <Routes>
         <Route path="/movies" element={<Movie />} />
-        <Route path="/tv-shows" element={<TvShow />} />
+        <Route path="/tv" element={<TvShow />} />
         <Route path="/my-list" element={<MyList />} />
       </Routes>
     </>

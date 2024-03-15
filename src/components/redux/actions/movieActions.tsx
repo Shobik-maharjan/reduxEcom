@@ -9,6 +9,7 @@ import {
   NOWPLAYING_MOVIE_LIST,
   POPULAR_MOVIE_LIST,
   RECOMMENDEDATION_LIST,
+  SEARCH_MOVIE,
   SIMILAR_LIST,
   TRENDING_MOVIE_LIST,
   UPCOMING_MOVIE_LIST,
@@ -241,7 +242,7 @@ export const addToMyList =
             });
             toast.success("item added to list");
           } else {
-            toast.error("alaready added to my list");
+            toast.error("already added to my list");
           }
         }
       });
@@ -292,11 +293,21 @@ export const deleteMyList = (index: any) => async (dispatch: any) => {
 };
 
 export const searchMovieList =
-  ({ query = "" }: { query: any }) =>
-  async () => {
+  ({ query }: { query: any }) =>
+  async (dispatch: any) => {
     try {
-      await axios.get(`${url}/search/movie?api_key=${apiKey}&query=${query}`);
+      const {
+        data: { results },
+      } = await axios.get(
+        `${url}/search/movie?api_key=${apiKey}&query=${query}`
+      );
       console.log(query);
+      console.log(results);
+
+      dispatch({
+        type: SEARCH_MOVIE,
+        payload: results,
+      });
     } catch (error) {
       console.log(error);
     }

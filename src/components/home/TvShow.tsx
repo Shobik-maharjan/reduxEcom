@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { discoverTvList } from "../redux/actions/movieActions";
-import { Link } from "react-router-dom";
+import { discoverTvList, searchMovieList } from "../redux/actions/movieActions";
+import { Link, useParams } from "react-router-dom";
 import SearchAndFilter from "../searchAndFilter/SearchAndFilter";
 
 const TvShow = () => {
   const imgUrl = import.meta.env.VITE_IMAGE_URL;
   const dispatch = useDispatch<any>();
   const [currentPage, setCurrentPage] = useState(1);
-  const [filterTvList, setFilterTvList] = useState([]);
-  const [search, setSearch] = useState("");
 
   const { discoverTvLists, loading, totalTvPage } = useSelector(
     (state: any) => state.movieList
   );
+
+  const id = useParams();
+  console.log(id);
 
   console.log(totalTvPage);
 
@@ -58,29 +59,21 @@ const TvShow = () => {
     return buttons;
   };
 
-  const handleSearchInput = (e: any) => {
-    setSearch(e.target.value);
-  };
-  console.log(discoverTvLists);
-
-  useEffect(() => {
-    const filteredList = discoverTvLists?.filter((tv: any) =>
-      tv.original_name.toLowerCase().includes(search.toLowerCase())
-    );
-    setFilterTvList(filteredList);
-  }, [search, discoverTvLists]);
-
   return (
     <>
-      <SearchAndFilter onChange={handleSearchInput} value={search} />
+      <SearchAndFilter
+        onSearch={(query: any) => {
+          dispatch(searchMovieList(query));
+        }}
+      />
       {loading ? (
         <div className={loading ? "display-loading" : ""}></div>
       ) : (
         <div className="p-4">
           {/* <h2 className="text-2xl font-bold mb-6">TV SHOWS</h2> */}
-          {filterTvList && (
+          {discoverTvLists && (
             <div className="flex gap-2.5 flex-wrap justify-between">
-              {filterTvList.map((item: any, i: any) => (
+              {discoverTvLists.map((item: any, i: any) => (
                 <Link to={`/tv/${discoverTvLists[i].id}`} key={item.id}>
                   <div className="mb-2 w-28 md:w-56">
                     <img
