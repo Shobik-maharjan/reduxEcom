@@ -130,7 +130,7 @@ const Home = () => {
               objectFit: "cover",
               backgroundImage: popularMovieLists
                 ? `url(${`${imgUrl}/${popularMovieLists[0].backdrop_path}`})`
-                : "rgb(16,16,16);}",
+                : "rgb(16,16,16)}",
             }}
           >
             <div className="movie-name pl-4 pt-[15%] pb-[100%] backdrop-blur-sm">

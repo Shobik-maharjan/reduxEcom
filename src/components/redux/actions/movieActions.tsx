@@ -227,7 +227,7 @@ export const addToMyList =
           const docSnap = await getDoc(docRef);
           const myList = docSnap?.data()?.myList;
 
-          const isDuplicateData = myList.some(
+          const isDuplicateData = myList?.some(
             (item: any) =>
               item.title === title &&
               item.imageUrl === imageUrl &&
