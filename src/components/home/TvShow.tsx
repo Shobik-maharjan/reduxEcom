@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { discoverTvList, searchMovieList } from "../redux/actions/movieActions";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SearchAndFilter from "../searchAndFilter/SearchAndFilter";
 
 const TvShow = () => {
@@ -9,14 +9,9 @@ const TvShow = () => {
   const dispatch = useDispatch<any>();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { discoverTvLists, loading, totalTvPage } = useSelector(
+  const { discoverTvLists, loading, totalTvPage, searchResults } = useSelector(
     (state: any) => state.movieList
   );
-
-  const id = useParams();
-  console.log(id);
-
-  console.log(totalTvPage);
 
   useEffect(() => {
     dispatch(discoverTvList(currentPage));
@@ -62,31 +57,48 @@ const TvShow = () => {
   return (
     <>
       <SearchAndFilter
-        onSearch={(query: any) => {
-          dispatch(searchMovieList(query));
-        }}
+        onSearch={(searchQuery: any) =>
+          dispatch(searchMovieList({ searchQuery }))
+        }
       />
       {loading ? (
         <div className={loading ? "display-loading" : ""}></div>
       ) : (
         <div className="p-4">
           {/* <h2 className="text-2xl font-bold mb-6">TV SHOWS</h2> */}
-          {discoverTvLists && (
-            <div className="flex gap-2.5 flex-wrap justify-between">
-              {discoverTvLists.map((item: any, i: any) => (
-                <Link to={`/tv/${discoverTvLists[i].id}`} key={item.id}>
-                  <div className="mb-2 w-28 md:w-56">
-                    <img
-                      className=" flex rounded-md cursor-pointer hover:opacity-80"
-                      src={`${imgUrl}/${item.poster_path}`}
-                      alt={item.original_name}
-                    />
-                    <p>{item.original_name}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+          {searchResults && searchResults.length > 0
+            ? searchResults && (
+                <div className="flex gap-2.5 flex-wrap justify-between">
+                  {searchResults.map((item: any) => (
+                    <Link to={`/tv/${item.id}`} key={item.id}>
+                      <div className="mb-2 w-28 md:w-56">
+                        <img
+                          className=" flex rounded-md cursor-pointer hover:opacity-80"
+                          src={`${imgUrl}/${item.poster_path}`}
+                          alt={item.original_name}
+                        />
+                        <p>{item.original_name}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )
+            : discoverTvLists && (
+                <div className="flex gap-2.5 flex-wrap justify-between">
+                  {discoverTvLists.map((item: any) => (
+                    <Link to={`/tv/${item.id}`} key={item.id}>
+                      <div className="mb-2 w-28 md:w-56">
+                        <img
+                          className=" flex rounded-md cursor-pointer hover:opacity-80"
+                          src={`${imgUrl}/${item.poster_path}`}
+                          alt={item.original_name}
+                        />
+                        <p>{item.original_name}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
           <div className="pagination-container flex justify-center">
             <button
               className="mr-2"

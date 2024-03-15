@@ -45,7 +45,6 @@ const Navbar = () => {
 
   const handleLinkClick = () => {
     window.scrollTo(0, 0);
-    dispatch(discoverMovieList(1));
   };
 
   const handleMovieClick = () => {
@@ -64,7 +63,7 @@ const Navbar = () => {
             className="logo text-white md:w-4/12 cursor-pointer text-2xl mr-4"
             onClick={handleLogoClick}
           >
-            Rotten&nbsp;Tomatoes
+            <Link to={"/"}>Movie&nbsp;App</Link>
           </div>
           <div className="search flex items-center my-2 w-full md:w-11/12">
             <input
@@ -80,7 +79,7 @@ const Navbar = () => {
             <ul className="flex items-center justify-between">
               <li className="p-0 md:px-2.5">
                 <Link
-                  to={"/movies"}
+                  to={"/movie"}
                   className="flex items-center"
                   onClick={handleMovieClick}
                 >

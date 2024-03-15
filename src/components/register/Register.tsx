@@ -65,10 +65,10 @@ const Register = () => {
 
   return (
     <>
-      <div className="w-full bg-slate-200 h-screen pt-6">
+      <div className="w-full bg-slate-200 h-screen flex justify-center items-center">
         <form
           onSubmit={validateCredential}
-          className="w-4/12 m-auto mt-20 bg-white rounded-sm p-4 border rounded-md"
+          className="w-8/12 sm:w-6/12 md:w-4/12 m-auto bg-white rounded-sm p-4 border rounded-md"
         >
           <h2 className="mb-4 m-auto text-center font-bold text-2xl">
             REGISTER

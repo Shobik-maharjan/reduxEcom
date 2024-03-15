@@ -10,6 +10,10 @@ const SearchAndFilter = ({ onSearch }: { onSearch: any }) => {
   const title = categoryTitle["*"];
   //   console.log(title);
 
+  const id = useParams();
+  const { "*": value } = id;
+  const category = value;
+
   const [movieGenre, setMovieGenre] = useState<any>();
   const [genre, setGenre] = useState<any>();
   const [query, setQuery] = useState("");
@@ -26,8 +30,8 @@ const SearchAndFilter = ({ onSearch }: { onSearch: any }) => {
     const searchQuery = e.target.value;
 
     setQuery(searchQuery);
-
-    onSearch(searchQuery); // Dispatch search action with query
+    onSearch({ query: searchQuery, category: category }); // Dispatch search action with query
+    // cate(value);
   };
 
   useEffect(() => {

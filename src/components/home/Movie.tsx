@@ -17,7 +17,6 @@ const Movie = () => {
 
   useEffect(() => {
     dispatch(discoverMovieList(currentPage));
-    dispatch(searchMovieList({ query: "" }));
   }, [currentPage]);
 
   const handlePageChange = (newPage: any) => {
@@ -63,7 +62,9 @@ const Movie = () => {
   return (
     <>
       <SearchAndFilter
-        onSearch={(query: any) => dispatch(searchMovieList({ query }))}
+        onSearch={(searchQuery: any) =>
+          dispatch(searchMovieList({ searchQuery }))
+        }
       />
       {loading ? (
         <div className={loading ? "display-loading" : ""}></div>

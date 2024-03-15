@@ -9,6 +9,7 @@ import {
   NOWPLAYING_MOVIE_LIST,
   POPULAR_MOVIE_LIST,
   RECOMMENDEDATION_LIST,
+  RESET_SEARCH,
   SEARCH_MOVIE,
   SIMILAR_LIST,
   TRENDING_MOVIE_LIST,
@@ -124,6 +125,9 @@ export const discoverMovieList =
           type: MOVIE_REQUEST_SUCCESS,
         });
       }, 1000);
+      dispatch({
+        type: RESET_SEARCH,
+      });
     } catch (e) {
       console.log(e);
     }
@@ -155,6 +159,9 @@ export const discoverTvList =
           type: MOVIE_REQUEST_SUCCESS,
         });
       }, 1000);
+      dispatch({
+        type: RESET_SEARCH,
+      });
     } catch (e) {
       console.log(e);
     }
@@ -293,16 +300,18 @@ export const deleteMyList = (index: any) => async (dispatch: any) => {
 };
 
 export const searchMovieList =
-  ({ query }: { query: any }) =>
+  ({ searchQuery }: { searchQuery: any }) =>
   async (dispatch: any) => {
     try {
+      const { query, category } = searchQuery;
+      console.log(searchQuery);
+      // console.log(category);
+
       const {
         data: { results },
       } = await axios.get(
-        `${url}/search/movie?api_key=${apiKey}&query=${query}`
+        `${url}/search/${category}?api_key=${apiKey}&query=${query}`
       );
-      console.log(query);
-      console.log(results);
 
       dispatch({
         type: SEARCH_MOVIE,

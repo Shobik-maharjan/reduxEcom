@@ -90,9 +90,6 @@ export const loginUser =
           },
         });
       }, 500);
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 2000);
     } catch (error) {
       dispatch({
         type: LOGIN_FAIL,

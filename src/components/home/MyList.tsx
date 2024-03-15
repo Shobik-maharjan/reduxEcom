@@ -23,7 +23,11 @@ const MyList = () => {
             {myLists.map((item: any, index: any) => (
               <div className="w-28 md:w-48" key={index}>
                 <Link to={`/${item.category}/${item.itemId}`}>
-                  <img src={item.imageUrl} alt="" className="cursor-pointer" />
+                  <img
+                    src={item.imageUrl}
+                    alt=""
+                    className="cursor-pointer rounded-md"
+                  />
                 </Link>
                 <div className="flex justify-between py-2 ">
                   <p>{item.title.slice(0, 10)}</p>
