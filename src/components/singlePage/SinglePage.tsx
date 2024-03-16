@@ -9,7 +9,7 @@ import {
   similarList,
 } from "../redux/actions/movieActions";
 import { useDraggable } from "react-use-draggable-scroll";
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
 
 const SinglePage = () => {
   const movieId = useParams();
@@ -188,7 +188,7 @@ const SinglePage = () => {
               )}
             </div>
           </div>
-          <ToastContainer />
+          {/* <ToastContainer closeOnClick theme="dark" /> */}
 
           {/* recommendation list */}
           <div

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { registerUser } from "../redux/actions/userActions";
 
@@ -162,7 +161,6 @@ const Register = () => {
             </Link>
           </div>
         </form>
-        <ToastContainer />
       </div>
     </>
   );

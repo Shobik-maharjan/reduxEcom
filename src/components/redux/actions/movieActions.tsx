@@ -247,9 +247,9 @@ export const addToMyList =
                 category,
               },
             });
-            toast.success("item added to list");
+            toast.success("Item added to list");
           } else {
-            toast.error("already added to my list");
+            toast.error("Already added to my list");
           }
         }
       });
@@ -290,7 +290,7 @@ export const deleteMyList = (index: any) => async (dispatch: any) => {
         await updateDoc(doc(db, "users", userId), {
           myList: arrayRemove(index),
         });
-        toast.success("removed from my list");
+        toast.success("Removed from my list");
         dispatch(getMyList());
       }
     });

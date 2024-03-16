@@ -50,7 +50,7 @@ export const registerUser =
             uid: users.user.uid,
           },
         });
-        toast.success("user registered successfully");
+        toast.success("User registered successfully");
       }, 500);
 
       setTimeout(() => {
@@ -78,7 +78,7 @@ export const loginUser =
 
       const user = await signInWithEmailAndPassword(auth, email, password);
       // console.log(user);
-      toast.success("user login successfully");
+      toast.success("User login successfully");
       localStorage.setItem("user", user.user.uid);
       localStorage.setItem("userName", user.user.displayName || "");
       setTimeout(() => {

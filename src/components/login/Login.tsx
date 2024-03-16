@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../redux/actions/userActions";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -53,7 +51,7 @@ const Login = () => {
       <div className="w-full bg-slate-200 h-screen flex justify-center items-center">
         <form
           onSubmit={validateCredential}
-          className="w-8/12 sm:w-6/12 md:w-4/12 m-auto bg-white rounded-sm p-4 border rounded-md"
+          className="w-8/12 sm:w-6/12 md:w-4/12 m-auto bg-white p-4 border rounded-md"
         >
           <h2 className="mb-4 m-auto text-center font-bold text-2xl">LOGIN</h2>
           <div className="mb-2">
@@ -114,7 +112,6 @@ const Login = () => {
             </span>
           </div>
         </form>
-        <ToastContainer />
       </div>
     </>
   );

@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteMyList, getMyList } from "../redux/actions/movieActions";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import { ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
 
 const MyList = () => {
@@ -45,7 +44,6 @@ const MyList = () => {
           </div>
         )}
       </div>
-      <ToastContainer />
     </>
   );
 };
