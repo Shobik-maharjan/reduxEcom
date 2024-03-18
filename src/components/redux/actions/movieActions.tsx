@@ -300,17 +300,15 @@ export const deleteMyList = (index: any) => async (dispatch: any) => {
 };
 
 export const searchMovieList =
-  ({ searchQuery }: { searchQuery: any }) =>
+  ({ searchQuery, category }: { searchQuery: any; category: any }) =>
   async (dispatch: any) => {
     try {
-      const { query, category } = searchQuery;
-      console.log(searchQuery);
-      // console.log(category);
+      // const { query, category } = searchQuery;
 
       const {
         data: { results },
       } = await axios.get(
-        `${url}/search/${category}?api_key=${apiKey}&query=${query}`
+        `${url}/search/${category}?api_key=${apiKey}&query=${searchQuery}`
       );
 
       dispatch({

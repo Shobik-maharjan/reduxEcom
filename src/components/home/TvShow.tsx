@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { discoverTvList, searchMovieList } from "../redux/actions/movieActions";
+import { discoverTvList } from "../redux/actions/movieActions";
 import { Link } from "react-router-dom";
-import SearchAndFilter from "../searchAndFilter/SearchAndFilter";
 
 const TvShow = () => {
   const imgUrl = import.meta.env.VITE_IMAGE_URL;
@@ -56,16 +55,11 @@ const TvShow = () => {
 
   return (
     <>
-      <SearchAndFilter
-        onSearch={(searchQuery: any) =>
-          dispatch(searchMovieList({ searchQuery }))
-        }
-      />
       {loading ? (
         <div className={loading ? "display-loading" : ""}></div>
       ) : (
         <div className="p-4">
-          {/* <h2 className="text-2xl font-bold mb-6">TV SHOWS</h2> */}
+          <h2 className="text-2xl font-bold mb-6">TV SHOWS</h2>
           {searchResults && searchResults.length > 0
             ? searchResults && (
                 <div className="flex gap-2.5 flex-wrap justify-between">
@@ -73,11 +67,11 @@ const TvShow = () => {
                     <Link to={`/tv/${item.id}`} key={item.id}>
                       <div className="mb-2 w-28 md:w-56">
                         <img
-                          className=" flex rounded-md cursor-pointer hover:opacity-80"
+                          className=" flex rounded-xl cursor-pointer hover:opacity-80"
                           src={`${imgUrl}/${item.poster_path}`}
                           alt={item.original_name}
                         />
-                        <p>{item.original_name}</p>
+                        <h2 className="pl-2">{item.original_name}</h2>
                       </div>
                     </Link>
                   ))}
@@ -89,11 +83,11 @@ const TvShow = () => {
                     <Link to={`/tv/${item.id}`} key={item.id}>
                       <div className="mb-2 w-28 md:w-56">
                         <img
-                          className=" flex rounded-md cursor-pointer hover:opacity-80"
+                          className=" flex rounded-xl cursor-pointer hover:opacity-80"
                           src={`${imgUrl}/${item.poster_path}`}
                           alt={item.original_name}
                         />
-                        <p>{item.original_name}</p>
+                        <h2 className="pl-2">{item.original_name}</h2>
                       </div>
                     </Link>
                   ))}

@@ -54,7 +54,7 @@ const Home = () => {
             src={img}
             alt="cover"
           />
-          <h2 className="hover:text-blue-800 w-fit">{title}</h2>
+          <h2 className="hover:text-blue-800 w-fit pl-2">{title}</h2>
         </Link>
       </div>
     </>

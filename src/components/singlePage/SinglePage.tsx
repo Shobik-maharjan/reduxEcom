@@ -54,12 +54,12 @@ const SinglePage = () => {
     fetchData();
   }, [value]);
 
-  const recommendedListRef: any = useRef(null);
-  const similarListRef: any = useRef(null);
+  // const recommendedListRef: any = useRef(null);
+  // const similarListRef: any = useRef(null);
 
   // Use the useDraggableScroll hook for each list
-  const { events: recommendedListEvents } = useDraggable(recommendedListRef);
-  const { events: similarListEvents } = useDraggable(similarListRef);
+  // const { events: recommendedListEvents } = useDraggable(recommendedListRef);
+  // const { events: similarListEvents } = useDraggable(similarListRef);
 
   useEffect(() => {
     if (value) {
@@ -84,6 +84,53 @@ const SinglePage = () => {
   } = singleMovieData;
 
   const imageUrl = `${imgUrl}/${poster_path}`;
+
+  const createContainerRef = () => {
+    const containerRef =
+      useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
+    const { events } = useDraggable(containerRef);
+    return { containerRef, events };
+  };
+
+  const Row = ({ title, arr = [] }: { title: string; arr: any[] }) => {
+    const { containerRef, events } = createContainerRef();
+    console.log(containerRef);
+    console.log(events);
+
+    return (
+      <div className="recommendation-list mt-6" ref={containerRef}>
+        {arr && arr.length !== 0 ? (
+          <div className="mt-4" ref={containerRef}>
+            <h2 className="pl-4 font-bold text-2xl">{title}</h2>
+            {arr && (
+              <div
+                className="px-4 w-full flex gap-2 overflow-x-scroll scrollbar-none"
+                ref={containerRef}
+                {...events}
+              >
+                {arr.map((item: any) => (
+                  <Link to={`/${category}/${item.id}`} key={item.id}>
+                    <div className="min-w-52" key={item.id}>
+                      <img
+                        className="flex rounded-xl cursor-pointer hover:opacity-80"
+                        src={`${imgUrl}/${item.poster_path}`}
+                        alt=""
+                      />
+                      <h2 className="pl-2">
+                        {item.original_title
+                          ? item.original_title
+                          : item.original_name}
+                      </h2>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : null}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -110,13 +157,6 @@ const SinglePage = () => {
             <div className="w-full md:w-6/12 px-4 mt-4">
               {singleMovieData && (
                 <div className="movie-details flex justify-start ">
-                  {/* <div className="movie_image w-6/12">
-                <img
-                  src={`${imgUrl}/${singleMovieData.poster_path}`}
-                  alt=""
-                  className="w-full rounded-md"
-                />
-              </div> */}
                   <div className="movie_detail">
                     <div className="movie_title font-bold text-3xl">
                       <p>{original_title ? original_title : original_name}</p>
@@ -188,81 +228,11 @@ const SinglePage = () => {
               )}
             </div>
           </div>
+          <div>
+            <Row title={"Recommended"} arr={recommendedLists} />
+            <Row title={"Similar"} arr={similarLists} />
+          </div>
           {/* <ToastContainer closeOnClick theme="dark" /> */}
-
-          {/* recommendation list */}
-          <div
-            className="recommendation-list mt-6"
-            ref={recommendedListRef}
-            {...recommendedListEvents}
-          >
-            {recommendedLists && recommendedLists.length !== 0 ? (
-              <div>
-                <h2 className="pl-4 font-bold text-2xl">Recommended</h2>
-                {recommendedLists && (
-                  <div
-                    className="px-4 w-full flex gap-2 overflow-x-scroll scrollbar-none"
-                    ref={recommendedListRef}
-                    {...recommendedListEvents}
-                  >
-                    {recommendedLists.map((item: any) => (
-                      <Link to={`/${category}/${item.id}`}>
-                        <div className="min-w-52" key={item.id}>
-                          <img
-                            className="flex rounded-md cursor-pointer hover:opacity-80"
-                            src={`${imgUrl}/${item.poster_path}`}
-                            alt=""
-                          />
-                          <p>
-                            {item.original_title
-                              ? item.original_title
-                              : item.original_name}
-                          </p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : null}
-          </div>
-
-          {/* suggestion list */}
-          <div
-            className="suggestion-list"
-            ref={similarListRef}
-            {...similarListEvents}
-          >
-            {similarLists && similarLists.length !== 0 ? (
-              <div>
-                <h2 className="pl-4 font-bold text-2xl">Similar</h2>
-                {similarLists && (
-                  <div
-                    className="w-full flex gap-2 overflow-x-scroll scrollbar-none px-4"
-                    ref={similarListRef}
-                    {...similarListEvents}
-                  >
-                    {similarLists.map((item: any) => (
-                      <Link to={`/${category}/${item.id}`}>
-                        <div className="min-w-52" key={item.id}>
-                          <img
-                            className="flex rounded-xl cursor-pointer hover:opacity-80"
-                            src={`${imgUrl}/${item.poster_path}`}
-                            alt=""
-                          />
-                          <p>
-                            {item.original_title
-                              ? item.original_title
-                              : item.original_name}
-                          </p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : null}
-          </div>
         </div>
       )}
     </>
