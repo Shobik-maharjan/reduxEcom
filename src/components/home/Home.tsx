@@ -133,14 +133,14 @@ const Home = () => {
                 : "rgb(16,16,16)}",
             }}
           >
-            <div className="movie-name pl-4 pt-[15%] pb-[100%] backdrop-blur-sm">
+            <div className="movie-name pl-4 pt-[15%] pb-[100%]">
               {popularMovieLists && (
                 <>
-                  <h1 className="text-white text-4xl md:text-6xl pb-4">
+                  <h1 className="text-white text-4xl md:text-6xl pb-4 ">
                     {popularMovieLists[0].original_title}
                   </h1>
 
-                  <p className="md:w-1/2 text-justify pr-4 text-white">
+                  <p className="md:w-1/2 text-justify pr-4 text-white drop-shadow-[10px_5px_8px_black] ">
                     {popularMovieLists[0].overview}
                   </p>
 

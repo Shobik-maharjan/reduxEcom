@@ -21,9 +21,9 @@ const MyList = () => {
             <>
               <h2 className="text-2xl font-bold mb-6">My List</h2>
               {myLists && (
-                <div className="flex gap-2 mt-4 flex-wrap justify-between">
+                <div className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 grid-cols-3 gap-2 mt-4">
                   {myLists.map((item: any, index: any) => (
-                    <div className="w-28 md:w-48" key={index}>
+                    <div key={index}>
                       <Link to={`/${item.category}/${item.itemId}`}>
                         <img
                           src={item.imageUrl}

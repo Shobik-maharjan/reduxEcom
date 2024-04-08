@@ -1,6 +1,6 @@
 # Link to Wbeite
 
-https://redux-movie-app-kappa.vercel.app/
+https://movie-app-redux-kappa.vercel.app/
 
 # React + TypeScript + Vite
 
