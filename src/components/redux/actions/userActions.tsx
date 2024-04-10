@@ -104,5 +104,6 @@ export const logoutUser = () => (dispatch: any) => {
     type: LOGOUT_USER,
   });
   localStorage.clear();
+  auth.signOut();
   window.location.href = "/login";
 };

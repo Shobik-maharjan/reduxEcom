@@ -12,8 +12,8 @@ const App = () => {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
         <Route path="/*" element={<Homepage />} />
       </Routes>
       <ToastContainer closeOnClick autoClose={2000} />

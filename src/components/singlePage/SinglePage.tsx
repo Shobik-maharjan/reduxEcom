@@ -94,8 +94,6 @@ const SinglePage = () => {
 
   const Row = ({ title, arr = [] }: { title: string; arr: any[] }) => {
     const { containerRef, events } = createContainerRef();
-    console.log(containerRef);
-    console.log(events);
 
     return (
       <div className="recommendation-list mt-6" ref={containerRef}>

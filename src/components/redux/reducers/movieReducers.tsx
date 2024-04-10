@@ -3,6 +3,7 @@ import {
   DISCOVER_MOVIE_LIST,
   DISCOVER_TV_LIST,
   GET_MY_LIST,
+  MOVEI_REQUEST_FAIL,
   MOVIE_REQUEST,
   MOVIE_REQUEST_SUCCESS,
   NOWPLAYING_MOVIE_LIST,
@@ -84,6 +85,11 @@ const movieReducers = (state: any = initialData, action: any) => {
       return {
         ...state,
         myLists: action.payload,
+      };
+    case MOVEI_REQUEST_FAIL:
+      return {
+        ...state,
+        loading: false,
       };
     case SEARCH_MOVIE:
       return {

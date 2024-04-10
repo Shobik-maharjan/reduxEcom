@@ -26,11 +26,11 @@ const Navbar = () => {
 
   const user = auth.currentUser;
 
-  useEffect(() => {
-    if (localStorage.getItem("user") === null) {
-      navigate("/login");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (localStorage.getItem("user") === null) {
+  //     navigate("/login");
+  //   }
+  // }, [user]);
 
   const [scrolling, setScrolling] = useState(false);
   const handleScroll = () => {
@@ -175,7 +175,7 @@ const Navbar = () => {
                           <div>
                             <div className="flex mb-2 items-center hover:underline">
                               <FaUserTie className="mr-2" />
-                              {user?.displayName}
+                              {user?.userName}
                             </div>
                             <div className="account flex items-center mb-2 cursor-pointer hover:underline">
                               <FaRegUser className="mr-2" />
@@ -237,21 +237,33 @@ const Navbar = () => {
                       onMouseLeave={() => setShowLogout(false)}
                     >
                       <div>
-                        <div className="flex mb-2 items-center hover:underline">
-                          <FaUserTie className="mr-2" />
-                          {user?.displayName}
-                        </div>
+                        {user ? (
+                          <div className="flex mb-2 items-center hover:underline">
+                            <FaUserTie className="mr-2" />
+                            {user.displayName}
+                          </div>
+                        ) : null}
                         <div className="account flex items-center mb-2 cursor-pointer hover:underline">
                           <FaRegUser className="mr-2" />
                           Account
                         </div>
-                        <div
-                          className="flex items-center cursor-pointer hover:underline"
-                          onClick={() => dispatch(logoutUser())}
-                        >
-                          <IoLogOutOutline className="mr-2" />
-                          Logout
-                        </div>
+                        {localStorage.getItem("user") ? (
+                          <div
+                            className="flex items-center cursor-pointer hover:underline"
+                            onClick={() => dispatch(logoutUser())}
+                          >
+                            <IoLogOutOutline className="mr-2" />
+                            Logout
+                          </div>
+                        ) : (
+                          <div
+                            className="flex items-center cursor-pointer hover:underline"
+                            onClick={() => navigate("/login")}
+                          >
+                            <IoLogOutOutline className="mr-2" />
+                            Login
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}

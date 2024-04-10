@@ -4,6 +4,7 @@ import {
   DISCOVER_MOVIE_LIST,
   DISCOVER_TV_LIST,
   GET_MY_LIST,
+  MOVEI_REQUEST_FAIL,
   MOVIE_REQUEST,
   MOVIE_REQUEST_SUCCESS,
   NOWPLAYING_MOVIE_LIST,
@@ -220,39 +221,49 @@ export const addToMyList =
   }) =>
   async (dispatch: any) => {
     try {
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          const userId = user.uid;
-          const docRef = doc(db, "users", userId);
-          const docSnap = await getDoc(docRef);
-          const myList = docSnap?.data()?.myList;
+      if (localStorage.getItem("user")) {
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            const userId = user.uid;
+            const docRef = doc(db, "users", userId);
+            const docSnap = await getDoc(docRef);
+            const myList = docSnap?.data()?.myList;
 
-          const isDuplicateData = myList?.some(
-            (item: any) =>
-              item.title === title &&
-              item.imageUrl === imageUrl &&
-              item.itemId === itemId
-          );
-          if (!isDuplicateData) {
-            await updateDoc(docRef, {
-              myList: arrayUnion({ title, imageUrl, userId, itemId, category }),
-            });
-            dispatch({
-              type: ADD_TO_MY_LIST,
-              payload: {
-                title,
-                imageUrl,
-                itemId,
-                userId,
-                category,
-              },
-            });
-            toast.success("Item added to list");
-          } else {
-            toast.error("Already added to my list");
+            const isDuplicateData = myList?.some(
+              (item: any) =>
+                item.title === title &&
+                item.imageUrl === imageUrl &&
+                item.itemId === itemId
+            );
+            if (!isDuplicateData) {
+              await updateDoc(docRef, {
+                myList: arrayUnion({
+                  title,
+                  imageUrl,
+                  userId,
+                  itemId,
+                  category,
+                }),
+              });
+              dispatch({
+                type: ADD_TO_MY_LIST,
+                payload: {
+                  title,
+                  imageUrl,
+                  itemId,
+                  userId,
+                  category,
+                },
+              });
+              toast.success("Item added to list");
+            } else {
+              toast.error("Already added to my list");
+            }
           }
-        }
-      });
+        });
+      } else {
+        toast.error("Login to add to list");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -276,6 +287,9 @@ export const getMyList = () => async (dispatch: any) => {
           type: MOVIE_REQUEST_SUCCESS,
         });
       }
+      dispatch({
+        type: MOVEI_REQUEST_FAIL,
+      });
     });
   } catch (error) {
     console.log(error);
