@@ -9,8 +9,6 @@ const MyList = () => {
   const navigate = useNavigate();
 
   const { myLists, loading } = useSelector((state: any) => state.movieList);
-  console.log("🚀 ~ MyList ~ myLists:", myLists);
-  // console.log(myLists);
   useEffect(() => {
     dispatch(getMyList());
   }, []);

@@ -64,7 +64,7 @@ const Movie = () => {
           <h2 className="text-2xl font-bold mb-6">MOVIES</h2>
           {searchResults && searchResults.length > 0
             ? searchResults && (
-                <div className="flex gap-2.5 flex-wrap justify-between">
+                <div className="grid grid-cols-6 gap-2.5 flex-wrap justify-between">
                   {searchResults.map((item: any) => (
                     <Link to={`/movie/${item.id}`} key={item.id}>
                       <div className="mb-4 w-28 md:w-56">
@@ -80,7 +80,7 @@ const Movie = () => {
                 </div>
               )
             : discoverMovieLists && (
-                <div className="flex gap-2.5 flex-wrap justify-between">
+                <div className="grid grid-cols-6 gap-2.5 flex-wrap justify-between">
                   {discoverMovieLists.map((item: any) => (
                     <Link to={`/movie/${item.id}`} key={item.id}>
                       <div className="mb-4 w-28 md:w-56">

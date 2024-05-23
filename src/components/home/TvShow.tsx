@@ -62,7 +62,7 @@ const TvShow = () => {
           <h2 className="text-2xl font-bold mb-6">TV SHOWS</h2>
           {searchResults && searchResults.length > 0
             ? searchResults && (
-                <div className="flex gap-2.5 flex-wrap justify-between">
+                <div className="grid grid-cols-6 gap-2.5 flex-wrap justify-between">
                   {searchResults.map((item: any) => (
                     <Link to={`/tv/${item.id}`} key={item.id}>
                       <div className="mb-2 w-28 md:w-56">
@@ -78,7 +78,7 @@ const TvShow = () => {
                 </div>
               )
             : discoverTvLists && (
-                <div className="flex gap-2.5 flex-wrap justify-between">
+                <div className="grid grid-cols-6 gap-2.5 flex-wrap justify-between">
                   {discoverTvLists.map((item: any) => (
                     <Link to={`/tv/${item.id}`} key={item.id}>
                       <div className="mb-2 w-28 md:w-56">
